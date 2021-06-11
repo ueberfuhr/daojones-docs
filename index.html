@@ -1,0 +1,3051 @@
+
+<!DOCTYPE html
+  SYSTEM "">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>DaoJones 2.0</title><link rel="stylesheet" type="text/css" href="css/custom/ars.css"><meta name="generator" content="DocBook XSL-NS Stylesheets V1.76.1"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="js/bootstrap/jquery-1.7.1.min.js"></script><script src="js/bootstrap/bootstrap-2.2.2.min.js"></script><script src="js/bootstrap/docbook-sidebar.js"></script><script src="js/bootstrap/google-code-prettify/prettify.js"></script></head><body onload="if (prettyPrint) { prettyPrint() }"><div class="book container" title="DaoJones 2.0"><div class="titlepage"><div><div><h1 class="title"><a name="UTF-8"></a>DaoJones 2.0</h1></div><div><h2 class="subtitle">Accessing databases the easy way</h2></div><div><div class="authorgroup">
+    <div class="author"><h3 class="author"><span class="firstname">Ralf</span> <span class="surname">Zahn</span></h3><div class="affiliation">
+        <span class="shortaffil">ARS Training &amp; Consulting<br></span>
+      </div></div>
+    <div class="author"><h3 class="author"><span class="firstname">Timo</span> <span class="surname">Weber</span></h3><div class="affiliation">
+        <span class="shortaffil">ARS Training &amp; Consulting<br></span>
+      </div></div>
+  </div></div><div><p class="copyright">Copyright &copy; 2015 ARS Computer und Consulting GmbH</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="preface"><a href="#d5e26">Acknowledgements</a></span></dt><dt><span class="chapter"><a href="#d5e30">1. Introduction</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e33">History</a></span></dt><dt><span class="section"><a href="#d5e46">Intention</a></span></dt></dl></dd><dt><span class="chapter"><a href="#d5e49">2. Concepts</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e52">Bean Mapping</a></span></dt><dt><span class="section"><a href="#d5e77">Datatype Mapping</a></span></dt><dt><span class="section"><a href="#d5e99">DaoJones Context</a></span></dt><dt><span class="section"><a href="#concepts_bean_model">Bean Model </a></span></dt><dt><span class="section"><a href="#concepts_connection_model">Connection Model </a></span></dt><dt><span class="section"><a href="#concepts_configuration_models">Further configuration models  </a></span></dt></dl></dd><dt><span class="chapter"><a href="#d5e256">3. Database Access (Basics)</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e259">Setting up the environment</a></span></dt><dt><span class="section"><a href="#d5e316">Define the mapping</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e329">Type Mapping</a></span></dt><dt><span class="section"><a href="#d5e358">Field Mapping</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e405">CRUD operations</a></span></dt><dt><span class="section"><a href="#database_access_basics_queries">Queries </a></span></dt><dd><dl><dt><span class="section"><a href="#d5e456">Reading the results</a></span></dt><dt><span class="section"><a href="#d5e471">Query Parameters</a></span></dt><dt><span class="section"><a href="#d5e480">Search Criteria</a></span></dt></dl></dd><dt><span class="section"><a href="#database_access_basics_identification">Bean Identification </a></span></dt></dl></dd><dt><span class="chapter"><a href="#d5e578">4. Database Access (Advanced)</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e581">Deconfiguring the context</a></span></dt><dt><span class="section"><a href="#d5e590">Accessing views</a></span></dt><dt><span class="section"><a href="#database_access_advanced_resources">Resources </a></span></dt><dt><span class="section"><a href="#d5e625">Converters</a></span></dt><dt><span class="section"><a href="#database_access_advanced_custom_search_criteria">Custom Search Criteria </a></span></dt><dt><span class="section"><a href="#database_access_advanced_custom_identification">Custom Bean Identification </a></span></dt><dt><span class="section"><a href="#database_access_advanced_meta_properties">Field Properties </a></span></dt><dt><span class="section"><a href="#database_access_advanced_appended">Appended Fields </a></span></dt></dl></dd><dt><span class="chapter"><a href="#events">5. Event Handling </a></span></dt><dt><span class="chapter"><a href="#test_support">6. Test Support </a></span></dt><dd><dl><dt><span class="section"><a href="#d5e805">JUnit Runner</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e812">Access the DaoJones environment</a></span></dt><dt><span class="section"><a href="#d5e826">Configure the test</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e847">JUnit Test Rule</a></span></dt><dt><span class="section"><a href="#d5e858">Java-based Test Model Configuration</a></span></dt><dt><span class="section"><a href="#d5e870">Hamcrest Matchers</a></span></dt><dt><span class="section"><a href="#test_support_driver">Test Driver </a></span></dt></dl></dd><dt><span class="chapter"><a href="#integration">7. Integration </a></span></dt><dd><dl><dt><span class="section"><a href="#d5e908">OSGi Integration</a></span></dt><dt><span class="section"><a href="#d5e912">Enterprise Java Integration</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e929">CDI</a></span></dt><dt><span class="section"><a href="#d5e935">Web Modules</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e1064">Lotus Notes Agents</a></span></dt></dl></dd><dt><span class="chapter"><a href="#drivers">8. Drivers </a></span></dt><dd><dl><dt><span class="section"><a href="#d5e1076">Database Drivers</a></span></dt><dd><dl><dt><span class="section"><a href="#drivers_notes">IBM Lotus Notes </a></span></dt><dt><span class="section"><a href="#drivers_test">Test Database Driver </a></span></dt><dt><span class="section"><a href="#d5e1601">Implement custom database drivers</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e1614">Cache Drivers</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e1620">DaoJones InMemory</a></span></dt><dt><span class="section"><a href="#d5e1630">IBM WebSphere Dynamic Cache Service</a></span></dt><dt><span class="section"><a href="#d5e1662">Implement custom cache drivers</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#d5e1675">9. Perspectives</a></span></dt></dl></div><div class="list-of-figures"><p><b>List of Figures</b></p><dl><dt>2.1. <a href="#d5e59">The bean mapping to a Notes document</a></dt><dt>2.2. <a href="#d5e68">The bean mapping to a Notes view</a></dt><dt>2.3. <a href="#d5e103">The DaoJones Context API</a></dt><dt>3.1. <a href="#d5e485">Pre-defined search criteria</a></dt><dt>7.1. <a href="#d5e946">The DaoJones Environment</a></dt><dt>7.2. <a href="#d5e1019">The DaoJones Environment</a></dt></dl></div><div class="list-of-tables"><p><b>List of Tables</b></p><dl><dt>8.1. <a href="#d5e1195">Type Mapping Table</a></dt></dl></div>
+  
+                 <div class="preface" title="Acknowledgements"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="d5e26"></a>Acknowledgements</h1></div></div></div></div>
+
+  
+
+  
+  <p>This book is produced by the <a class="ulink" href="http://wikbook.googlecode.com" target="_top">Wikbook</a> tool. Wikbook is an
+    open source project for converting wiki files into a set of docbook files.</p>
+
+</div>
+  <div class="chapter" title="Chapter&nbsp;1.&nbsp;Introduction"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="d5e30"></a>Chapter&nbsp;1.&nbsp;Introduction</h1></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d5e33">History</a></span></dt><dt><span class="section"><a href="#d5e46">Intention</a></span></dt></dl></div>
+    
+    <p>DaoJones is designed for accessing databases by mapping Java objects to database entities. As distinguished from JDBC or JPA, DaoJones is not restricted to relational databases.</p>
+    <div class="section" title="History"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e33"></a>History</h2></div></div></div>
+      
+      <p>The project was initially founded in 2007 as part of the <a class="ulink" href="http://www.ars.de/" target="_top">ARS Website</a> project. The main purpose at that time was to encapsulate accesses to the website database - which is a Notes database - in a separate layer to make the business entities independent from the Notes Java API. This allowed to implement thread safety at a central position and to make this available for the whole application.</p>
+      <p>By now, DaoJones is used by multiple ARS-internal projects (e.g. the  <span class="italic">Unterlagengenerierung</span> ) and by currently a single customer project too.</p>
+      <p>The name <span class="italic">DaoJones</span> is derived from the abbreviation <span class="italic">DAO</span>, which is used for <span class="italic">Data Access Objects</span>, a design pattern used for persistence implementations. The term is not used anymore, it was replaced by a simple POJO, briefly called <span class="italic">bean</span>.</p>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>Although it allows to use different database drivers, currently there is only one driver implementation to access Notes databases. Further drivers must yet be implemented.</p>
+      </div>
+    </div>
+    <div class="section" title="Intention"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e46"></a>Intention</h2></div></div></div>
+      
+      <p>The framework is intented to be used by Java applications to map business entities to databases, no matter what kind of database (relational, document-based, object-based, file-based) is used at runtime. The database can be replaced without any changes within the application code. The developer can handle the concepts and terms of DaoJones and does not have to get familiar with database-specific concepts and terms.</p>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;2.&nbsp;Concepts"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="d5e49"></a>Chapter&nbsp;2.&nbsp;Concepts</h1></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d5e52">Bean Mapping</a></span></dt><dt><span class="section"><a href="#d5e77">Datatype Mapping</a></span></dt><dt><span class="section"><a href="#d5e99">DaoJones Context</a></span></dt><dt><span class="section"><a href="#concepts_bean_model">Bean Model </a></span></dt><dt><span class="section"><a href="#concepts_connection_model">Connection Model </a></span></dt><dt><span class="section"><a href="#concepts_configuration_models">Further configuration models  </a></span></dt></dl></div>
+    
+    <p>This chapter names and describes basic concepts and terms that should be known to understand the functionality of the framework.</p>
+    <div class="section" title="Bean Mapping"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e52"></a>Bean Mapping</h2></div></div></div>
+      
+      <p>The most important concept is the mapping of beans to an artifact within the database. The following graphic shows the mapping between a Java bean and a Notes document. The Java bean has a class that is mapping to the <span class="italic">Form</span> field of the Notes document. The fields of the class are mapped to further fields of the Notes document. This mapping can be customized by annotations, an external XML file or programmatically at runtime using the <span class="italic">Bean Model API</span>. See chapter <a class="link" href="#concepts_bean_model" title="Bean Model">"Bean Model"</a> for detailed information.</p>
+      <p>
+        </p><div class="figure"><a name="d5e59"></a><p class="title"><b>Figure&nbsp;2.1.&nbsp;The bean mapping to a Notes document</b></p><div class="figure-contents">
+          
+          <div class="mediaobject" align="center"><img src="images/content/concepts/mapping.png" align="middle" alt="The bean mapping to a Notes document"></div>
+        </div></div><p><br class="figure-break">
+      </p>
+      <p>It is also possible to map a bean to a view, i.e. a selection of entities based on a query and a provision of columns based on single fields or on calculated values. Views can provide sorting and categorizing entries.</p>
+      <p>
+        </p><div class="figure"><a name="d5e68"></a><p class="title"><b>Figure&nbsp;2.2.&nbsp;The bean mapping to a Notes view</b></p><div class="figure-contents">
+          
+          <div class="mediaobject" align="center"><img src="images/content/concepts/mappingView.png" align="middle" alt="The bean mapping to a Notes view"></div>
+        </div></div><p><br class="figure-break">
+      </p>
+      <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+        <p>Please be aware that view columns with calculated values can only be mapped to read-only fields and therefore cannot be used for updates.</p>
+      </div>
+    </div>
+    <div class="section" title="Datatype Mapping"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e77"></a>Datatype Mapping</h2></div></div></div>
+      
+      <p>The mapping of Java and database fields or columns is not limited to strings. The following types can be used as Java field type:</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>Primitive types and their wrapper classes</p>
+        </li><li class="listitem">
+          <p>
+            <code class="code">java.lang.String</code>
+          </p>
+        </li><li class="listitem">
+          <p>
+            <code class="code">java.util.Date</code>
+          </p>
+        </li><li class="listitem">
+          <p>Enumerations</p>
+        </li><li class="listitem">
+          <p>One-dimensional Arrays or collections of these types</p>
+        </li><li class="listitem">
+          <p>
+            <code class="code">de.ars.daojones.runtime.beans.fields.Resource</code> (for BLOBs, CLOBs, Attachments...) - see Section <a class="link" href="#database_access_advanced_resources" title="Resources">"Resources"</a>
+          </p>
+        </li></ul></div>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>A database driver implementation can provide further types, but the types listed above must be provided by each driver implementation. The driver implementation decides to which types in the database those types are mapped.</p>
+      </div>
+    </div>
+    <div class="section" title="DaoJones Context"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e99"></a>DaoJones Context</h2></div></div></div>
+      
+      <p>The central element for initializing DaoJones is the DaoJones Context object. It provides access to the whole configuration and to the connections. See the diagram below.</p>
+      <p>
+        </p><div class="figure"><a name="d5e103"></a><p class="title"><b>Figure&nbsp;2.3.&nbsp;The DaoJones Context API</b></p><div class="figure-contents">
+          
+          <div class="mediaobject" align="center"><img src="images/content/concepts/daojonescontext.png" align="middle" alt="The DaoJones Context API"></div>
+        </div></div><p><br class="figure-break">
+      </p>
+      <p>The diagram shows a couple of interfaces/classes that have the following meaning:</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>
+            <span class="bold"><strong>DaoJonesContextConfig</strong></span> provides access to the configuration models (see <a class="link" href="#concepts_bean_model" title="Bean Model">"Bean Model"</a>, <a class="link" href="#concepts_connection_model" title="Connection Model">"Connection Model"</a> and <a class="link" href="#concepts_configuration_models" title="Further configuration models">"Further configuration models"</a>)</p>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>ConnectionProvider</strong></span> is a common interface for objects that provide connections. Those connections are used to access a database with the common CRUD operations.</p>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>Application</strong></span> is a special <span class="italic">ConnectionProvider</span> derivation that represents a single application. DaoJones is designed to work for multiple applications within a single process. Those applications manage their connections by using a unique id.</p>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>DaoJonesContext</strong></span> provides access the the <span class="italic">DaoJonesContextConfig</span> and the <span class="italic">ApplicationContext</span> objects.</p>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>DaoJonesContextFactory</strong></span> is a factory class that creates <span class="italic">DaoJonesContext</span> objects that have pre-configured configuration models (see <a class="link" href="#concepts_configuration_models" title="Further configuration models">"Further configuration models"</a>).</p>
+        </li></ul></div>
+      <p>The initialization of DaoJones may look like the following example: </p><div class="programlistingco"><pre class="prettyprint language-java">    final DaoJonesContextFactory factory = new DaoJonesContextFactory();
+
+    final DaoJonesContext ctx = factory.createContext();
+
+    try {
+
+      final Application app = ctx.getApplication("mail");
+
+      try {
+
+        final Connection&lt;Memo&gt; con = app.getConnection(Memo.class);
+
+        try {
+
+          // Access database
+
+        } finally {
+
+          con.close();
+
+        }
+
+      } finally {
+
+        app.close();
+
+      }
+
+    } finally {
+
+      ctx.close();
+
+    }
+
+</pre></div><p>
+      </p>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>
+          <span class="italic">DaoJonesContext</span>, <span class="italic">Application</span> and <span class="italic">Connection</span> implement the interface <code class="code">java.io.Closeable</code> and therefore the <code class="code">try-with-resource</code> block (new feature of Java7) can be used.</p>
+      </div>
+      <p>
+        </p><div class="programlistingco"><pre class="prettyprint language-java">final DaoJonesContextFactory factory = new DaoJonesContextFactory();
+
+try (final DaoJonesContext ctx = factory.createContext()) {
+
+  try (final Application app = ctx.getApplication( "mail" )) {
+
+    try(final Connection&lt;Memo&gt; con = app.getConnection( Memo.class )) {
+
+      // Access database
+
+    }
+
+  }
+
+}</pre></div><p>   </p>
+    </div>
+    <div class="section" title="Bean Model"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="concepts_bean_model"></a>Bean Model </h2></div></div></div>
+      
+      <p>The bean model describes the mapping of Java beans to database entities. You can access the bean models via </p><div class="programlistingco"><pre class="prettyprint language-java">    final BeanModelManager bmm = ctx.getConfiguration().getBeanModelManager();
+
+    final Collection&lt;BeanModel&gt; models = bmm.getModels();
+
+</pre></div><p>
+      </p>
+      <p>or, to read only a single bean, via </p><div class="programlistingco"><pre class="prettyprint language-java">    final String app = "mail";
+
+    final Id id = new Id(app, Memo.class.getName());
+
+    final BeanModel model = bmm.getModel(id);
+
+</pre></div><p>
+      </p>
+      <p>The diagram below shows the main artifacts of the bean model. <span class="inlinemediaobject"><img src="images/content/concepts/beanmodel.png" align="middle"></span>
+      </p>
+      <p>The following statements can be read out from this diagram:</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>A bean model is uniquely identified by the qualified name of the Java type and the name of the application. So it is possible to map the same class twice using different applications.</p>
+        </li><li class="listitem">
+          <p>A bean type is mapped to a table (Notes: <span class="italic">document</span>) or a view.</p>
+        </li><li class="listitem">
+          <p>There are multiple types of elements that can be mapped to a database field:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+              <p>
+                <span class="bold"><strong>Fields</strong></span> are injected while reading from the database. They are read out while storing values into the database.</p>
+            </li><li class="listitem">
+              <p>
+                <span class="bold"><strong>Method parameters</strong></span> are injected while reading from the database. The method then is invoked with the parameter values. It is possible to use multiple annotated parameters for a single method. There is no ordering of method invocations.</p>
+            </li><li class="listitem">
+              <p>
+                <span class="bold"><strong>Constructor parameters</strong></span> are treated similarly with the exception of the time and the multiplicity. There can be only one constructor with annotated parameters. If there isn't any constructor with annotated parameters, the default constructor must be provided.</p>
+            </li><li class="listitem">
+              <p>
+                <span class="bold"><strong>Method results</strong></span> are read out while storing values into the database. The method then is invoked. Currently, such methods must not have any parameters.</p>
+            </li></ul></div>
+        </li></ul></div>
+      <p>So the Memo type could map the sender field like this: </p><div class="programlistingco"><pre class="prettyprint language-java">@Field( value = "From", id = "sender" )
+
+public String getSender() {
+
+  // Calculate sender
+
+  return sender;
+
+}
+
+public void setSender( @FieldRef( "sender" ) final String sender ) {
+
+  // Process sender
+
+}</pre></div><p>
+      </p>
+      <p>
+        </p><div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+          <p>It is recommended to map fields to the database, because they are not restricted to read-only or write-only access and imply the simplest solution. The mapping of parameters or return values of methods could be used for</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>information that is processed, but not stored within the bean, e.g. some kind of attachment</p>
+            </li><li class="listitem">
+              <p>multiple values that need to be combined and handled together</p>
+            </li><li class="listitem">
+              <p>final fields (constructor parameters)  </p>
+            </li></ul></div>
+        </div><p> </p><div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+          <p>Be aware that the bean model does not make any provisions for inheritation and interface implementations. It is possible to map elements of interfaces and abstract classes with the bean model, but it is only allowed to access the database using a concrete type. To get all mapped elements of a type (in consideration of overwritten elements), you can use </p><div class="programlistingco"><pre class="prettyprint language-java">    final BeanModel model = bmm.getEffectiveModel(app, Memo.class);
+
+</pre></div><p>
+          </p>
+        </div><p> </p><div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+          <p>The declaration of the bean model with the usage of annotations is only one possibility. You can also define the mappings programmatically and with XML files. Here's a short example: </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;beans-config xmlns="http://www.ars.de/daojones/2.0/beans"&gt;
+
+  &lt;bean type="de.ars.daojones.example.mails.Memo"&gt;
+
+    &lt;type-mapping name="Memo"/&gt;
+
+    &lt;field name="sender"&gt;
+
+      &lt;field-mapping name="From"/&gt;
+
+    &lt;/field&gt;
+
+  &lt;/bean&gt;
+
+&lt;/beans-config&gt;</pre></div><p>
+          </p>
+        </div><p>
+      </p>
+    </div>
+    <div class="section" title="Connection Model"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="concepts_connection_model"></a>Connection Model </h2></div></div></div>
+      
+      <p>The connection model describes the connections to the databases that are accessed by the DaoJones runtime. You can access the configuration model via </p><div class="programlistingco"><pre class="prettyprint language-java">    final ConnectionModelManager cmm = ctx.getConfiguration().getConnectionModelManager();
+
+    cmm.getModels();
+
+</pre></div><p>
+      </p>
+      <p>or, to read only a single connection, via </p><div class="programlistingco"><pre class="prettyprint language-java">    final String app = "mail";
+
+    final String connectionId = "memo";
+
+    final Id id = new Id(app, connectionId);
+
+    final ConnectionModel model = cmm.getModel(id);
+
+</pre></div><p>
+      </p>
+      <p>The diagram below shows the main artifacts of the connection model. <span class="inlinemediaobject"><img src="images/content/concepts/connectionmodel.png" align="middle"></span>
+      </p>
+      <p>You should know:</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>A connection model is uniquely identified by the name of the application and the id of the connection.</p>
+        </li><li class="listitem">
+          <p>The id of the database driver is assigned as an attribute of a connection. The path to the database is driver-specific.</p>
+        </li><li class="listitem">
+          <p>During runtime, the connection is determined by the name of the application and the type of the bean. Therefore, each connection model has a list of type names assigned. There is also a default flag. The default connection of an application is used for all bean bean types that are not explicitely assigned to any other connection. </p>
+        </li><li class="listitem">
+          <p>There is a built-in-support for cached connections. Cache drivers can be used to minimize database accesses.</p>
+        </li></ul></div>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>The declaration of the connection model can be defined programmatically and with XML files. Here's a short example: </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;configuration xmlns="http://www.ars.de/daojones/2.0/connections"&gt;
+
+
+
+  &lt;connection factory="de.ars.daojones.drivers.notes" id="memo" name="Email Inbox"&gt;
+
+    &lt;database&gt;notes:///C1547121FC3A2141?version=1.1&amp;amp;type=replica&amp;amp;server=acme.com&lt;/database&gt;
+
+    &lt;credential type="static"&gt;
+
+      &lt;property name="username" value="johndoe"/&gt;
+
+      &lt;property name="password" value="mysecret"/&gt;
+
+    &lt;/credential&gt;
+
+    &lt;for-class&gt;de.ars.daojones.example.mails.Memo&lt;/for-class&gt;
+
+  &lt;/connection&gt;
+
+
+
+&lt;/configuration&gt;</pre></div><p>
+        </p>
+      </div>
+    </div>
+    <div class="section" title="Further configuration models"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="concepts_configuration_models"></a>Further configuration models  </h2></div></div></div>
+      
+      <p>There are further models available through the <span class="italic">DaoJonesContextConfig</span> object.</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>
+            <span class="italic">ConnectionFactoryModel</span> and <span class="italic">CacheFactoryModel</span> provide driver implementations for database access and caching. They are typically registered by the driver itself using the Java ServiceLoader API.</p>
+        </li><li class="listitem">
+          <p>
+            <span class="italic">ApplicationModel</span> is not required. It provides the possibility to describe an application for logging or prospecting purposes. Connection and bean models can be requested for application names that are described by an ApplicationModel.</p>
+        </li></ul></div>
+      <p>  </p>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;3.&nbsp;Database Access (Basics)"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="d5e256"></a>Chapter&nbsp;3.&nbsp;Database Access (Basics)</h1></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d5e259">Setting up the environment</a></span></dt><dt><span class="section"><a href="#d5e316">Define the mapping</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e329">Type Mapping</a></span></dt><dt><span class="section"><a href="#d5e358">Field Mapping</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e405">CRUD operations</a></span></dt><dt><span class="section"><a href="#database_access_basics_queries">Queries </a></span></dt><dd><dl><dt><span class="section"><a href="#d5e456">Reading the results</a></span></dt><dt><span class="section"><a href="#d5e471">Query Parameters</a></span></dt><dt><span class="section"><a href="#d5e480">Search Criteria</a></span></dt></dl></dd><dt><span class="section"><a href="#database_access_basics_identification">Bean Identification </a></span></dt></dl></div>
+    
+    <p>This chapter describes the first steps for implementing a DaoJones based application.</p>
+    <div class="section" title="Setting up the environment"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e259"></a>Setting up the environment</h2></div></div></div>
+      
+      <p>Before you can access the database, you need to set up your environment. </p><div class="alert alert-error alert-block" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Important</h3>
+          <p>The following description only deals with a simple Java SE environment. Further steps can be neccessary when running your application in another environment. See the chapter <a class="link" href="#integration" title="Chapter&nbsp;7.&nbsp;Integration">"Integration into Java Environments"</a> for further details.</p>
+        </div><p>
+      </p>
+      <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+          <p>
+            <span class="bold"><strong>Classpath Configuration</strong></span>: Aside from the DaoJones runtime, the database drivers need to be in the application's classpath. If a driver registers itself using the Java ServiceLoader API, no further steps for registration are neccessary.</p>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>Connection Configuration</strong></span>: It is recommended to do this using an XML file. See the example below. The XML file should be in the application's classpath. </p>
+          <div class="programlistingco"><pre class="prettyprint language-xml">&lt;configuration xmlns="http://www.ars.de/daojones/2.0/connections"&gt;
+
+
+
+  &lt;connection factory="de.ars.daojones.drivers.notes" id="memo" name="Email Inbox"&gt;
+
+    &lt;database&gt;notes:///C1547121FC3A2141?version=1.1&amp;amp;type=replica&amp;amp;server=acme.com&lt;/database&gt;
+
+    &lt;credential type="static"&gt;
+
+      &lt;property name="username" value="johndoe"/&gt;
+
+      &lt;property name="password" value="mysecret"/&gt;
+
+    &lt;/credential&gt;
+
+    &lt;for-class&gt;de.ars.daojones.example.mails.Memo&lt;/for-class&gt;
+
+  &lt;/connection&gt;
+
+
+
+&lt;/configuration&gt;</pre></div>
+          <p> </p>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>The example shows a static kind of credential, where username and password are placed into the XML. If you need any dynamic way of finding a credential (e.g. to use a token or to request the user to input the credentials), implement a custom <code class="code">javax.security.auth.callback.CallbackHandler</code> and use it as shown in the example below. See Section <a class="link" href="#notes_jaas_callbackhandler" title="JAAS Integration">"JAAS Integration using the Notes Driver"</a> for detailed information. </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;configuration xmlns="http://www.ars.de/daojones/2.0/connections"&gt;
+
+
+
+  &lt;connection factory="de.ars.daojones.drivers.notes" id="memo" name="Email Inbox"&gt;
+
+    &lt;database&gt;notes:///C1547121FC3A2141?version=1.1&amp;amp;type=replica&amp;amp;server=acme.com&lt;/database&gt;
+
+    &lt;credential type="generic"&gt;
+
+      &lt;property name="class" value="your.callbackhandler.implementation.Class"/&gt;
+
+    &lt;/credential&gt;
+
+    &lt;for-class&gt;de.ars.daojones.example.mails.Memo&lt;/for-class&gt;
+
+  &lt;/connection&gt;
+
+
+
+&lt;/configuration&gt;</pre></div><p>
+            </p>
+          </div>
+        </li></ol></div>
+      <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+          <p>
+            <span class="bold"><strong> Application Initialization</strong></span>: In an unmanaged environment, you need to create the <span class="italic">DaoJonesContext</span> and read the connection manually. This is done with the following steps:</p>
+          <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+              <p>Create an instance of <span class="italic">DaoJonesContextFactory</span>. </p>
+              <div class="programlistingco"><pre class="prettyprint language-java">    final DaoJonesContextFactory factory = new DaoJonesContextFactory();
+
+</pre></div>
+            </li><li class="listitem">
+              <p>Add a <span class="italic">ConfigurationSource</span> for reading bean models to the <span class="italic">DaoJonesContextFactory</span>. The example uses annotations to map the elements of the bean types to the database. </p>
+              <div class="programlistingco"><pre class="prettyprint language-java">    // Configure Bean Model (scan classpath for annotations)
+
+    final String application = "mail-application";
+
+    final ConfigurationSource beanConfig = new AnnotationBeanConfigurationSource(
+
+            application);
+
+    factory.setConfigurationSources(beanConfig);
+
+</pre></div>
+            </li><li class="listitem">
+              <p>Add a <span class="italic">ConfigurationSource</span> for reading connection models to the <span class="italic">DaoJonesContextFactory</span>. The example uses an XML-file-based configuration. </p>
+              <div class="programlistingco"><pre class="prettyprint language-java">    // Configure Connections
+
+    final URL connectionConfigURL = Memo.class.getResource("daojones-connections.xml");
+
+    final ConfigurationSource connectionConfig = new XmlConnectionConfigurationSource(
+
+            application, connectionConfigURL);
+
+    factory.setConfigurationSources(connectionConfig);
+
+</pre></div>
+            </li><li class="listitem">
+              <p>Create the <span class="italic">DaoJonesContext</span>. The configurations are read and the context is configured. Then get the <span class="italic">Application</span> object and the connection. </p>
+              <div class="programlistingco"><pre class="prettyprint language-java">    // Create DaoJones Context
+
+    final DaoJonesContext ctx = factory.createContext();
+
+    try {
+
+      final Application app = ctx.getApplication(application);
+
+      try {
+
+        // Find connection for Memo type
+
+        final Connection&lt;Memo&gt; con = app.getConnection(Memo.class);
+
+        try {
+
+          // Access database
+
+        } finally {
+
+          con.close();
+
+        }
+
+      } finally {
+
+        app.close();
+
+      }
+
+    } finally {
+
+      ctx.close();
+
+    }
+
+</pre></div>
+            </li></ol></div>
+        </li></ol></div>
+    </div>
+    <div class="section" title="Define the mapping"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e316"></a>Define the mapping</h2></div></div></div>
+      
+      <p>The easiest way to define a mapping is to use annotations directly within the Java code. The following examples uses this way. The only requirement is a <code class="code">META-INF/daojones-beans.xml</code> file within the project. It is also possible to use an XML-file-based mapping (see chapter <a class="link" href="#concepts_bean_model" title="Bean Model">"Bean Model"</a>). This could be an option, if</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>You don't want classpath dependencies to DaoJones annotations within your beans.</p>
+        </li><li class="listitem">
+          <p>You need to define a mapping of a bean that is part of an external library.</p>
+        </li><li class="listitem">
+          <p>You need to define multiple mappings of your beans. In this case, use multiple applications (<span class="italic">Application</span>).  Of course, you can use both possibilities in combination.</p>
+        </li></ul></div>
+      <div class="section" title="Type Mapping"><div class="titlepage"><div><div><h3 class="title"><a name="d5e329"></a>Type Mapping</h3></div></div></div>
+        
+        <p>At first, you map the bean type to a table (Lotus Notes: <span class="italic">Document</span>) or to a view. Use the <code class="code">@DataSource</code> annotation to declare the name of the table or view. The <code class="code">@DataSource</code> annotation is optional. If there isn't any annotation, the bean type is mapped to a table that has the simple class name of the bean type. Here are some examples</p>
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            <p>A mapping to the table <span class="italic">Memo</span>. In this example, you could remove the <code class="code">@DataSource</code> annotation because the bean type has the same simple name like the table. </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">@DataSource( "Memo" )
+
+public class Memo {
+
+  // ...
+
+}</pre></div>
+            <p> </p>
+          </li><li class="listitem">
+            <p>A mapping to a view <span class="italic">Memos</span>: </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">@DataSource( value = "Memo", type = DataSourceType.VIEW )
+
+public class Memo {
+
+  // ...
+
+}</pre></div>
+            <p> </p>
+          </li><li class="listitem">
+            <p>A mapping to a view <span class="italic">Memo</span>, which has the same name like the bean type: </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">@DataSource( type = DataSourceType.VIEW )
+
+public class Memo {
+
+  // ...
+
+}</pre></div>
+            <p> </p>
+          </li></ul></div>
+      </div>
+      <div class="section" title="Field Mapping"><div class="titlepage"><div><div><h3 class="title"><a name="d5e358"></a>Field Mapping</h3></div></div></div>
+        
+        <p>You can declare a mapping to a column of a table or view by using the <code class="code">@Field</code> annotation. There are multiple types of elements that can be mapped to a database field:</p>
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            <p>
+              <span class="bold"><strong>Fields</strong></span> are injected while reading from the database. They are read out while storing values into the database. </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">  // field mapping to a field with a same name
+
+  @Field
+
+  private String firstName;</pre></div>
+            <p> </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">  // field mapping to a field with a different name
+
+  @Field( "given" )
+
+  private String firstName;</pre></div>
+          </li><li class="listitem">
+            <p>
+              <span class="bold"><strong>Method parameters</strong></span> are injected while reading from the database. The method then is invoked with the parameter values. It is possible to use multiple annotated parameters for a single method. There is no ordering of method invocations. </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">  public void setFirstName( @Field( "firstName" ) final String firstName ) {
+
+    // ...
+
+  }</pre></div>
+            <p>   Of course, this is not limited to setter methods with a single parameter. </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">  public void init( @Field( "firstName" ) final String firstName, 
+
+                    @Field( "lastName" )  final String lastName ) {
+
+    // ...
+
+  }</pre></div>
+          </li><li class="listitem">
+            <p>
+              <span class="bold"><strong>Constructor parameters</strong></span> are treated similarly with the exception of the time and the multiplicity. There can be only one constructor with annotated parameters. If there isn't any constructor with annotated parameters, the default constructor must be provided. </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">  public Person( @Field( "firstName" ) final String firstName ) {
+
+    // ...
+
+  }</pre></div>
+          </li><li class="listitem">
+            <p>
+              <span class="bold"><strong>Method results</strong></span> are read out while storing values into the database. The method then is invoked. Currently, such methods must not have any parameters. </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">  @Field( "firstName" )
+
+  public String getFirstName() {
+
+    // ...
+
+  }</pre></div>
+          </li><li class="listitem">
+            <p>If you have two methods (one for reading, one for writing a value), you can refer the field mapping by using the <code class="code">@FieldRef</code> annotation. </p>
+            <div class="programlistingco"><pre class="prettyprint language-java">  public void setFirstName( @Field( value="firstName", id="fn" ) final String firstName ) {
+
+    // ...
+
+  }
+
+  @FieldRef( "fn" )
+
+  public String getFirstName() {
+
+    // ...
+
+  }</pre></div>
+          </li></ul></div>
+        <div class="alert alert-error alert-block" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Important</h3>
+          <p> The name of the field should always be specified for method parameters and results. The <code class="code">@Field</code> annotation declares default values for them, but they can only be derived from the method's name and the index (not the name!) of the parameter. For details, see the Javadocs of the <code class="code">@Field</code> annotation.</p>
+        </div>
+      </div>
+    </div>
+    <div class="section" title="CRUD operations"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e405"></a>CRUD operations</h2></div></div></div>
+      
+      <p>The <span class="italic">Connection</span> interface defines the CRUD operations with a vararg parameter, i.e. you can execute these operations with multiple beans of the same type with a single invocation. </p><div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+          <p>A CRUD operation is not executed as a transaction. DaoJones currently does not support transactions.</p>
+        </div><p>
+      </p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>
+            <span class="bold"><strong>CREATE</strong></span> Just create an instance of your bean and invoke the <code class="code">update()</code> method. </p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    final Memo newMemo = new Memo();
+
+    // ... (invoke setter)
+
+    con.update(newMemo);
+
+</pre></div>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>READ</strong></span> DaoJones provides a sophisticated query mechanism. For detailed information see chapter <a class="link" href="#database_access_basics_queries" title="Queries">"Queries"</a>. </p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    final SearchResult&lt;Memo&gt; result = con.findAll(query);
+
+    try {
+
+      for (final Memo memo : result) {
+
+        // ...
+
+      }
+
+    } finally { // Closeable implementation
+
+      result.close();
+
+    }
+
+</pre></div>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>UPDATE</strong></span> If you invoke the <code class="code">update()</code> method on a bean that you read from the database before, it is updated. </p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    con.update(memo1, memo2);
+
+</pre></div>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>DELETE</strong></span> </p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    con.delete(memo);
+
+</pre></div>
+          <p> or shorter (to avoid loading objects from the database) - for detailed information see chapter <a class="link" href="#database_access_basics_queries" title="Queries">"Queries"</a>. </p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    con.delete(query);
+
+</pre></div>
+        </li></ul></div>
+      <div class="alert alert-error alert-block" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Important</h3>
+        <p>If you want to write to the database by invoking the <code class="code">update()</code> or <code class="code">delete()</code> method, it is neccessary for the runtime to identify the objects within the database. See chapter <a class="link" href="#database_access_basics_identification" title="Bean Identification">"Bean Identification"</a> for detailed information.</p>
+      </div>
+    </div>
+    <div class="section" title="Queries"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="database_access_basics_queries"></a>Queries </h2></div></div></div>
+      
+      <p>One important feature of DaoJones is its Query API. This API allows to create database queries based on the bean mappings and with the help of Java interfaces and classes. You do not have to build a query string, you create a <span class="italic">Query</span> object. Syntax errors are prevented by the Java compiler.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">    final Query query = Query.create();
+
+    final SearchResult&lt;Memo&gt; result = connection.findAll(query);
+
+</pre></div>
+      <div class="section" title="Reading the results"><div class="titlepage"><div><div><h3 class="title"><a name="d5e456"></a>Reading the results</h3></div></div></div>
+        
+        <p>The result object implements the <code class="code">Iterable</code> interface and can be read out with a simple <code class="code">for</code> loop. This follows the lazy-initialization pattern, i.e. that the information is loaded during iterating through the results.</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">    for (final Memo memo : result) {
+
+      // use the memo
+
+    }
+
+</pre></div>
+        <p>It is also possible to get all objects loaded immediately into a list. Be aware that this can have effect to the performance or memory allocation of your application.</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">    // Get all objects.
+
+    final List&lt;Memo&gt; memos = result.getAsList();
+
+    // Get only the objects at index 10 (including) to 20 (excluding).
+
+    final List&lt;Memo&gt; memosSub = result.getAsList(10, 20);
+
+</pre></div>
+        <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+          <p>The result object also implements the <code class="code">Closeable</code> interface and can be used with the try-with-resource statement that was introduced with Java 7.</p>
+        </div>
+      </div>
+      <div class="section" title="Query Parameters"><div class="titlepage"><div><div><h3 class="title"><a name="d5e471"></a>Query Parameters</h3></div></div></div>
+        
+        <p>The <span class="italic">Query</span> class allows further query parameters like the maximum count of results or the super types of the bean type that should be loaded from the database. This can be done with a single line of code by the usage of <span class="italic">Chained Calls</span>. If not specified, the maximum number of results is <code class="code">Integer.MAX_VALUE</code> and all subclasses of the bean type are loaded.</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">    final Query query = Query.create() // default values
+
+            .only(10) // maximum count of results 
+
+            .only(TextMemo.class, HtmlMemo.class) // sub types
+
+            .only(searchCriterion); // search criteria
+
+</pre></div>
+      </div>
+      <div class="section" title="Search Criteria"><div class="titlepage"><div><div><h3 class="title"><a name="d5e480"></a>Search Criteria</h3></div></div></div>
+        
+        <p>Search criteria are query parameters that select database entries that match a given rule. DaoJones defines a <code class="code">SearchCriterion</code> interface and provides implementations of the most common criteria.</p>
+        <p>
+          </p><div class="figure"><a name="d5e485"></a><p class="title"><b>Figure&nbsp;3.1.&nbsp;Pre-defined search criteria</b></p><div class="figure-contents">
+            
+            <div class="mediaobject" align="center"><img src="images/content/database_access_basics/searchcriteria.png" align="middle" alt="Pre-defined search criteria"></div>
+          </div></div><p><br class="figure-break">
+        </p>
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            <p>
+              <span class="italic">Tautology</span> is a criterion that is always <code class="code">true</code>. You can use this criterion to avoid <code class="code">null</code> values and to combine it with other criteria.</p>
+          </li><li class="listitem">
+            <p>
+              <span class="italic">Negation</span> is a criterion that switches another criterion as a <code class="code">not</code> operator does.</p>
+          </li><li class="listitem">
+            <p>
+              <span class="italic">LogicalCombination</span> is a combination of 2 criteria using an <code class="code">and</code> or <code class="code">or</code>. There are utility methods that allow to combine more than 2 criteria, but those helper methods create multiple logical combinations.</p>
+          </li><li class="listitem">
+            <p>
+              <span class="italic">IsEmpty</span> and <span class="italic">FieldComparison</span> address a single field within the database. <span class="italic">IsEmpty</span> matches in case of an empty field, i.e. a <code class="code">null</code> value, an empty string, an empty collection or an empty array. <span class="italic">FieldComparison</span> is a very flexible criterion that allows to compare a single field value. Comparisons are possible for strings, numbers, dates, booleans and collections.</p>
+          </li></ul></div>
+        <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+          <p>It is possible to implement custom search criteria and to extend the <span class="italic">FieldComparison</span> criterion by custom comparisons (see Section <a class="link" href="#database_access_advanced_custom_search_criteria" title="Custom Search Criteria">"Custom Search Criteria"</a>).</p>
+        </div>
+        <p>You can create instances of this classes directly or you can use the <code class="code">SearchCriterionBuilder</code> classes that provides some static helper methods to create search criteria with a chained call. </p><div class="programlistingco"><pre class="prettyprint language-java">    import static de.ars.daojones.runtime.query.SearchCriterionBuilder.*;
+
+    // ...
+
+    final Query query = Query.create().only(
+
+      field( "subject" ).asString().contains( "IMPORTANT" )
+
+      .and().
+
+      field( "sender" ).asCaseInsensitiveString().startsWith( "max." )
+
+    );
+
+</pre></div><p>
+        </p>
+        <p>You can use a search criterion to test conditions on a bean that was already loaded from the database. Therefore, you can use the <code class="code">matches</code> method. You have to retrieve the <code class="code">ApplicationContext</code> from the <code class="code">Connectionprovider</code> because the bean mapping is dependent from it.</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">   final boolean isImportant = 
+
+     field( "subject" ).asString().contains( "IMPORTANT" ).matches( ctx, memo );
+
+</pre></div>
+        <p>And the Search Criteria API implements the Visitor Pattern to step through a search criterion's structure. You can build very complex search criteria by combining simple criteria by the usage of the <span class="italic">LogicalCombination</span>. It will result in a kind of tree structure where one node can contain one or two childs. Then, it can be helpful to use the Visitor Pattern to deal with this structure in a generic way.</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">    criterion.accept( new SearchCriterionVisitor() {
+
+
+
+      @Override
+
+      public boolean preVisit( final SearchCriterion criterion ) {
+
+        // ... do something with the criterion
+
+        return true; // use false to cancel visiting children
+
+      }
+
+      
+
+    });</pre></div>
+      </div>
+    </div>
+    <div class="section" title="Bean Identification"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="database_access_basics_identification"></a>Bean Identification </h2></div></div></div>
+      
+      <p>To modify database entries, it is neccessary for DaoJones to find the corresponding entry of a single bean within the database. Therefore, the concept of <span class="italic">Bean Identification</span> was introduced. Beans, that are used to modify entries within the database, must provide an internal field that holds an identificator for the bean. This identificator is set by the database driver when the bean is loaded from the database or saved for the first time. It is read out by the driver during an invocation of <code class="code">update()</code> or <code class="code">delete()</code>. This field must meet some requirements:</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>It can be of any visibility scope. Getter or setter method is not used by the driver and therefore not neccessary.</p>
+        </li><li class="listitem">
+          <p>It must not be <code class="code">final</code> and cannot be injected as a method or constructor parameter. If beans are replicated or cached, it should not be <code class="code">transient</code> or <code class="code">@XmlTransient</code>.</p>
+        </li><li class="listitem">
+          <p>It can be declared by any super type of the bean, so it is possible to have a common super type for all beans providing such an id field.</p>
+        </li><li class="listitem">
+          <p>It must be of a type that allows the assignment of an object of type <code class="code">Identificator</code>, so allowed types are</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+              <p>
+                <code class="code">de.ars.daojones.runtime.beans.identification.Identificator</code>
+              </p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">java.io.Serializable</code>
+              </p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">java.lang.Object</code>
+              </p>
+            </li></ul></div>
+        </li><li class="listitem">
+          <p>It can also be declared of type <code class="code">java.lang.String</code> to get a string representation of the identificator. The bean then is limited to the usage within one application, i.e. it can be mapped to a single database element. If you want to read objects from one table or view and store them into another one (including the same database or different databases), this might not fit your requirements.</p>
+        </li><li class="listitem">
+          <p>It must be annotated with <code class="code">@Id</code>. (or - within an XML file - declared by the <code class="code">&lt;id-field&gt;</code> tag)</p>
+        </li></ul></div>
+      <div class="programlistingco"><pre class="prettyprint language-java">@DataSource("Training")
+
+public class Training {
+
+  @Id
+
+  private Object id;
+
+  // ...
+
+}</pre></div>
+      <p>It is possible to use one bean within multiple applications, where different connections are configured. You can read the bean from a database within the first application (where an identifcator is set for this application) und store it to the database within the second application. Be aware that it then is handled as a new object that leads to the creation of an entry within the database.</p>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>For customization of the default bean identification behaviour, see chapter <a class="link" href="#database_access_advanced_custom_identification" title="Custom Bean Identification">"Custom Bean Identification"</a>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;4.&nbsp;Database Access (Advanced)"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="d5e578"></a>Chapter&nbsp;4.&nbsp;Database Access (Advanced)</h1></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d5e581">Deconfiguring the context</a></span></dt><dt><span class="section"><a href="#d5e590">Accessing views</a></span></dt><dt><span class="section"><a href="#database_access_advanced_resources">Resources </a></span></dt><dt><span class="section"><a href="#d5e625">Converters</a></span></dt><dt><span class="section"><a href="#database_access_advanced_custom_search_criteria">Custom Search Criteria </a></span></dt><dt><span class="section"><a href="#database_access_advanced_custom_identification">Custom Bean Identification </a></span></dt><dt><span class="section"><a href="#database_access_advanced_meta_properties">Field Properties </a></span></dt><dt><span class="section"><a href="#database_access_advanced_appended">Appended Fields </a></span></dt></dl></div>
+    
+    <p>This chapter contains information about topics that you do not need in your applications by default. In some cases, extensions and customizations are necessary. The extensions supported by DaoJones are described within this chapter.</p>
+    <div class="section" title="Deconfiguring the context"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e581"></a>Deconfiguring the context</h2></div></div></div>
+      
+      <p>As you have already seen, you can make changes to the configuration by accessing the model managers directly or by adding configuration sources to the context factory <span class="underline">before</span> creating the context. There is another possibility that provides a more comfortable configuration <span class="underline">after</span> the context was created: the <span class="italic">DaoJonesContextConfigurator</span> class. This class even allows to undo a configuration very quickly.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">    // Create the instance
+
+    final DaoJonesContextConfigurator configurator = new DaoJonesContextConfigurator(
+
+            djContext);
+
+    // Configure the context by specifying a single or multiple configuration sources
+
+    final ConfigurationHandle handle = configurator.configure(configurationSource);
+
+    try {
+
+      // do anything else... (access the database)
+
+    } finally {
+
+      // deconfigure the context
+
+      configurator.deconfigure(handle);
+
+      // BE AWARE: the handle is not valid anymore, do not use it again
+
+    }
+
+</pre></div>
+    </div>
+    <div class="section" title="Accessing views"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e590"></a>Accessing views</h2></div></div></div>
+      
+      <p>If you specify the field mapping for a bean that is mapped to a view, the name of the field is interpreted as the title of the column of the view. Alternatively, you can map to the index of the column within the view - <code class="code">?0</code> for the first column, <code class="code">?1</code> for the second and so on.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">@DataSource(value = "Authors", type = DataSourceType.VIEW)
+
+public class Author {
+
+
+
+  @Field("?0")
+
+  private String surname;
+
+  @Field("?1")
+
+  private String givenname;
+
+
+
+}</pre></div>
+      <p>Views are restricted. For example, they cannot provide resources. Beans are only updateable if their writeable fields are only mapped to columns that are not calculated.</p>
+      <p>On the other hand, views can encapsulate a query, search faster because of an index and sort results.</p>
+      <p>
+        </p><div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+          <p>Hidden columns will be addressed too, so the index of the first visible column in the view is not always <code class="code">?0</code>.</p>
+        </div><p>. </p><div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+          <p>You can decide whether to access the view column by specifying their title or their index. In case of design changes, it matters if the title of a column was changed, or columns were inserted or deleted. It is recommended only to map the bean type to a technical view that is not displayed in the Notes UI. The Notes designer then can change all UI views, but must be careful with changes to technical views.</p>
+        </div><p>.</p>
+    </div>
+    <div class="section" title="Resources"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="database_access_advanced_resources"></a>Resources </h2></div></div></div>
+      
+      <p>Databases often allow to store large binaries (BLOBs) and characters (CLOBs). Lotus Notes documents can contain attachments. DaoJones provides a <code class="code">Resource</code> interface to read and write such data. You just need to declare a field mapping to a parameter or method result with this type.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">  public void processAttachment(@Field("attachment1") final Resource attachment)
+
+          throws IOException {
+
+    final long size = attachment.getLength();
+
+    final InputStream in = attachment.getInputStream();
+
+    // Process InputStream
+
+  }</pre></div>
+      <p>
+        </p><div class="alert alert-block" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3>
+          <p>It is not recommended to map instance variables of this type, because resources can allocate a big size of memory. Furthermore, resources are not <code class="code">Serializable</code> by default. And they are not liable to be accessible after reading the bean during query result iteration.</p>
+        </div><p> </p><div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+          <p>If you want to buffer a resource as an instance variable within your bean, you can use the type <code class="code">de.ars.daojones.runtime.beans.fields.BufferedResource</code>.</p>
+        </div><p>
+      </p>
+      <p>There are default implementations of the <code class="code">Resource</code> interface to easily store small BLOBs/CLOBs/attachments to the database.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">  @Field("attachment1")
+
+  public Resource createAttachment1() {
+
+    return new StringResource("This is my sample text.", "SampleText.txt");
+
+  }
+
+
+
+  @Field("attachment2")
+
+  public Resource createAttachment2() {
+
+    return new ByteArrayResource(new byte[] { 19, 50, 1, 0, 8 }, "SampleImage.jpg",
+
+            "image/jpg");
+
+  }</pre></div>
+    </div>
+    <div class="section" title="Converters"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e625"></a>Converters</h2></div></div></div>
+      
+      <p>If you map an instance variable, a parameter or a method result to a database field, the database value is converted automatically to the Java type. This  behaviour must be customized when the default conversion does not match your requirements or you use custom data types that DaoJones is not able to convert to. Therefore, you can implement custom converters by extending the <code class="code">TypeConverter</code> class and customizing your field mapping.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">public class PersonConverter extends TypeConverter&lt;String, Person&gt; {
+
+
+
+  @Override
+
+  protected Person toPropertyValue(final LoadContext context, final String value)
+
+          throws FieldAccessException {
+
+    final Person person = new Person();
+
+    final String[] names = value.split(" ");
+
+    person.setFirstName(names[0]);
+
+    person.setLastName(names[1]);
+
+    return person;
+
+  }
+
+
+
+  @Override
+
+  protected String toDatabaseValue(final StoreContext context, final Person value)
+
+          throws FieldAccessException {
+
+    final Person person = value;
+
+    return person.getFirstName() + " " + person.getLastName();
+
+  }
+
+
+
+  @Override
+
+  protected Class&lt;String&gt; getDatabaseType(final ConverterContext context) {
+
+    return String.class;
+
+  }
+
+
+
+}</pre></div>
+      <div class="programlistingco"><pre class="prettyprint language-java">  @Field(value = "sender", converter = PersonConverter.class)
+
+  private Person sender;</pre></div>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>The <code class="code">TypeConverter</code> converts single objects, but it can be used for arrays or collections of these objects. The <code class="code">TypeConverter</code> then automatically reads and converts the array or collection by using the single object conversion methods.</p>
+      </div>
+      <p>During conversion, there is a <code class="code">ConverterContext</code> parameter that provides information about the context of the conversion. It is possible to get details about the field that is currently converted.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">    // Get the bean that contains the field
+
+    final Object bean = context.getBean();
+
+    // Get connection to access database during conversion
+
+    final Connection&lt;Person&gt; con = context.getConnectionProvider().getConnection(
+
+            Person.class);
+
+    // Get the field mapping (part of Bean Model)
+
+    final DatabaseFieldMappedElement descriptor = context.getDescriptor();
+
+    final DatabaseFieldMapping fieldMapping = descriptor.getFieldMapping();
+
+    // Get the name of the (database) field
+
+    final String field = fieldMapping.getName();
+
+    // Get the type of the target within the bean
+
+    final Class&lt;?&gt; targetType = context.getTargetType();
+
+</pre></div>
+      <p>If you need to derive the name of the database field or even want to store the value into multiple database fields, you can implement the <code class="code">Converter</code> interface directly. You then have the responsibility to access the database by using helper objects. It is possible to map a single bean property to multiple fields within the database.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">public class PersonConverter2 implements Converter {
+
+
+
+  // Store the first name and last name into multiple fields
+
+  @Override
+
+  public void store(final StoreContext context, final Object value)
+
+          throws DataAccessException, UnsupportedFieldTypeException {
+
+    final Person person = (Person) value;
+
+    final String field = context.getDescriptor().getFieldMapping().getName();
+
+    final Property[] md = context.getMetadata();
+
+    final Writer writer = context.getWriter();
+
+    final UpdatePolicy up = UpdatePolicy.REPLACE;
+
+    writer.storeToDatabase(field + "_firstName", String.class, person.getFirstName(), up,
+
+            md);
+
+    writer.storeToDatabase(field + "_lastName", String.class, person.getLastName(), up,
+
+            md);
+
+  }
+
+
+
+  @Override
+
+  public Object load(final LoadContext context) throws DataAccessException,
+
+          UnsupportedFieldTypeException {
+
+    final Person person = new Person();
+
+    final String field = context.getDescriptor().getFieldMapping().getName();
+
+    final Property[] md = context.getMetadata();
+
+    final Reader reader = context.getReader();
+
+    person.setFirstName(reader.readFromDatabase(field + "_firstName", String.class, md));
+
+    person.setLastName(reader.readFromDatabase(field + "_lastName", String.class, md));
+
+    return person;
+
+  }
+
+}</pre></div>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>It is possible to store a bean value to multiple database fields. It is possible to load multiple fields from the database to a single bean field. If you want to store database values into multiple bean fields, you need to use methods (e.g. a Setter) that assign the single value to multiple fields.</p>
+      </div>
+      <p>For custom field types, it might be easier to create common, system-wide converters. Those converters do not have to be referenced at each field of this type. They just have to get annotated with <code class="code">@Converts</code>.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">@Converts(Person.class)
+
+public class PersonConverter3 implements Converter {
+
+
+
+  @Override
+
+  public void store(final StoreContext context, final Object value)
+
+          throws DataAccessException, UnsupportedFieldTypeException {
+
+    // ...
+
+  }
+
+
+
+  @Override
+
+  public Object load(final LoadContext context) throws DataAccessException,
+
+          UnsupportedFieldTypeException {
+
+    final Person person = new Person();
+
+    // ...
+
+    return person;
+
+  }
+
+
+
+}</pre></div>
+    </div>
+    <div class="section" title="Custom Search Criteria"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="database_access_advanced_custom_search_criteria"></a>Custom Search Criteria </h2></div></div></div>
+      
+      <p>DaoJones provides common search criteria that should meet your requirements in most cases. Nevertheless, DaoJones allows to create custom search criteria. First, you need to implement the <code class="code">SearchCriterion</code> interface to provide an API for your application's classes. It is recommended to use the super class <code class="code">AbstractSearchCriterion</code>.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">public class IsFavorite extends AbstractSearchCriterion {
+
+
+
+  private static final long serialVersionUID = 1L;
+
+
+
+  private final Collection&lt;URL&gt; favorites;
+
+
+
+  public IsFavorite(final Collection&lt;URL&gt; favorites) {
+
+    super();
+
+    this.favorites = favorites;
+
+  }
+
+
+
+  public Collection&lt;URL&gt; getFavorites() {
+
+    return favorites;
+
+  }
+
+
+
+  @Override
+
+  public boolean matches(final ApplicationContext ctx, final Object bean)
+
+          throws ConfigurationException {
+
+    return favorites.contains(bean);
+
+  }
+
+
+
+  @Override
+
+  public int hashCode() {
+
+    final int prime = 31;
+
+    int result = 1;
+
+    result = prime * result + ((favorites == null) ? 0 : favorites.hashCode());
+
+    return result;
+
+  }
+
+
+
+  @Override
+
+  public boolean equals(final Object obj) {
+
+    return this == obj || getClass() == obj.getClass()
+
+            &amp;&amp; favorites.equals(((IsFavorite) obj).favorites);
+
+  }
+
+
+
+}</pre></div>
+      <div class="alert alert-block" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3>
+        <p>Be aware that you should overwrite <code class="code">equals(Object)</code> and <code class="code">hashCode()</code> whenever you have instance variables to make it possible to compare search criteria. This is used e.g. for the caching of query results.</p>
+      </div>
+      <p>If you need to read and compare field values, you can use the <code class="code">getFieldValue(...)</code> method.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">public class IsMailToSelf extends AbstractSearchCriterion {
+
+
+
+  private static final long serialVersionUID = 1L;
+
+
+
+  @Override
+
+  public boolean matches(final ApplicationContext ctx, final Object bean)
+
+          throws ConfigurationException, FieldAccessException, DataAccessException {
+
+    final String sender = (String) getFieldValue(ctx, bean, "sender");
+
+    final String receiver = (String) getFieldValue(ctx, bean, "receiver");
+
+    return sender.equalsIgnoreCase(receiver);
+
+  }
+
+
+
+}</pre></div>
+      <p>For simple comparisons of a field value, you could extend the <code class="code">FieldComparison</code> criterion by custom <code class="code">Comparison</code> types.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">public class FamilyComparison implements Comparison&lt;Person&gt; {
+
+
+
+  @Override
+
+  public boolean matches(final Person left, final Person right) {
+
+    // if they have the same last name, they belong to the same family
+
+    return left.getLastName().equals(right.getLastName());
+
+  }
+
+
+
+  @Override
+
+  public Class&lt;Person&gt; getType() {
+
+    return Person.class;
+
+  }
+
+
+
+}</pre></div>
+      <div class="programlistingco"><pre class="prettyprint language-java">    final Person family = new Person();
+
+    family.setLastName("Mueller");
+
+    final Query query = Query.create().only(
+
+            new FieldComparison&lt;Person&gt;("person", new FamilyComparison(), family));
+
+</pre></div>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>You also have to implement a handler that is used during query execution. This implementation is driver-specific. For the Notes driver, please see chapter <a class="link" href="#notes_extensions" title="Extending the Notes driver">"Extending the Notes driver"</a>.</p>
+      </div>
+    </div>
+    <div class="section" title="Custom Bean Identification"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="database_access_advanced_custom_identification"></a>Custom Bean Identification </h2></div></div></div>
+      
+      <p>It is possible to implement a custom bean identification behaviour, e.g. if you want to use bytecode weaving to automatically create an id field during class loading, or if the identificator of a bean should be stored externally. Such strategies need special handling e.g. for replication or caching of beans, so they are not part of the DaoJones default behaviour.</p>
+      <p>For the implementation of the custom behaviour, you need to to the following steps:</p>
+      <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+          <p>Implement the <code class="code">BeanIdentificator</code> interface This interface defines methods for reading and storing an identificator of a bean. Implement these methods for your custom behaviour. </p>
+          <div class="programlistingco"><pre class="prettyprint language-java">public class CustomBeanIdentificator implements BeanIdentificator {
+
+  @Override
+
+  public Identificator getIdentificator(final BeanModel model, final Object bean)
+
+          throws DataAccessException, ConfigurationException {
+
+    final Identificator identificator = null;
+
+    // .. fetch identificator
+
+    return identificator;
+
+  }
+
+
+
+  @Override
+
+  public void setIdentificator(final BeanModel model, final Object bean,
+
+          final Identificator identificator) throws DataAccessException,
+
+          ConfigurationException {
+
+    // ... store identificator
+
+  }
+
+}</pre></div>
+        </li><li class="listitem">
+          <p>Annotate your bean with <code class="code">@IdentifiedBy</code> and link to your custom implementation class (or within XML file based configuration, use the <code class="code">&lt;identificator-type&gt;</code> tag). </p>
+          <div class="programlistingco"><pre class="prettyprint language-java">@DataSource("Training")
+
+@IdentifiedBy(CustomBeanIdentificator.class)
+
+public class Training {
+
+  // ...
+
+}</pre></div>
+        </li></ol></div>
+      <div class="alert alert-error alert-block" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Important</h3>
+        <p>To identify beans that are used by multiple applications, your custom implementation has to deal with different identificators. You can use the <code class="code">ApplicationDependentIdentificator</code> class, which is a wrapper for multiple identificators of a single bean.</p>
+      </div>
+    </div>
+    <div class="section" title="Field Properties"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="database_access_advanced_meta_properties"></a>Field Properties </h2></div></div></div>
+      
+      <p>Fields can have properties declared. Such properties can be defined and read out by a converter or database driver. The following example shows how to define such meta properties within an XML bean mapping file: </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;beans-config xmlns="http://www.ars.de/daojones/2.0/beans"&gt;
+
+  &lt;bean type="de.ars.daojones.example.Mail"&gt;
+
+    &lt;type-mapping name="Memo"/&gt;
+
+    &lt;field name="subject"&gt;
+
+      &lt;field-mapping name="Subject"&gt;
+
+        &lt;meta name="case" value="upper-case"/&gt;
+
+      &lt;/field-mapping&gt;
+
+    &lt;/field&gt;
+
+  &lt;/bean&gt;
+
+&lt;/beans-config&gt;</pre></div><p> A converter that reads out the meta information, could look like this: </p><div class="programlistingco"><pre class="prettyprint language-java">@SuppressWarnings("unused")
+
+public class MetaConverter implements Converter {
+
+
+
+  @Override
+
+  public Object load(final LoadContext context) throws FieldAccessException,
+
+          DataAccessException, UnsupportedFieldTypeException {
+
+    final Object result = null;
+
+    final List&lt;Property&gt; metadata = context.getDescriptor().getFieldMapping()
+
+            .getMetadata();
+
+    for (final Property meta : metadata) {
+
+      final String name = meta.getName();
+
+      final String value = meta.getValue();
+
+    }
+
+    // ...
+
+    return result;
+
+  }
+
+
+
+  @Override
+
+  public void store(final StoreContext context, final Object value)
+
+          throws FieldAccessException, DataAccessException, UnsupportedFieldTypeException {
+
+    // ...
+
+  }
+
+
+
+}</pre></div><p>
+      </p>
+      <p>To set properties, you could also use the <code class="code">@Property</code> or <code class="code">@Metadata</code> annotations (Package <code class="code">de.ars.daojones.runtime.beans.annotations</code>). </p><div class="programlistingco"><pre class="prettyprint language-java">@DataSource
+
+public class PropertyExample {
+
+
+
+  @Property(name = "myProperty", value = "myValue")
+
+  @Field
+
+  private String field1;
+
+
+
+  @Metadata({ @Property(name = "myProperty1", value = "myValue1"),
+
+      @Property(name = "myProperty2", value = "myValue2") })
+
+  @Field
+
+  private String field2;
+
+
+
+}</pre></div><p>
+      </p>
+      <p>Or you could create a custom annotation and a custom <code class="code">FieldAnnotationHandler</code> to manage the meta properties at a central position. The <code class="code">FieldAnnotationHandler</code> is registered using the Java Serviceloader Mechanism. You can use the <code class="code">AbstractFieldAnnotationHandler</code> subclass, that provides utility methods, to create a custom implementation. </p><div class="programlistingco"><pre class="prettyprint language-java">@Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+
+@Retention(RetentionPolicy.RUNTIME)
+
+@Inherited
+
+public @interface Uppercase {
+
+
+
+}</pre></div><p> </p><div class="programlistingco"><pre class="prettyprint language-java">public class UppercaseHandler extends AbstractFieldAnnotationHandler {
+
+
+
+  @Override
+
+  public void handle(final AnnotatedElement element,
+
+          final DatabaseFieldMappedElement model) throws ConfigurationException {
+
+    if (null != element.getAnnotation(Uppercase.class)) {
+
+      addProperty(model.getFieldMapping(), "case", "upper-case");
+
+    }
+
+
+
+  }
+
+
+
+}</pre></div><p>
+      </p>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>One built-in application is the <code class="code">computed</code> flag of a field, which can have values of equal and unequal to <code class="code">"true"</code>. Computed flags are automatically reset by the database before storing an entry. The framework will reinject such fields after storing or deleting a bean. It is possible to mark a member of your bean class with the <code class="code">@Computed</code> annotation. </p><div class="programlistingco"><pre class="prettyprint language-java">@DataSource("Car")
+
+public class Car {
+
+
+
+  // the amount of gas
+
+  @Field
+
+  private int fuel;
+
+  // litres per 100 miles
+
+  @Field
+
+  private double consumption;
+
+  // how many miles can we drive with the current fuel
+
+  @Computed
+
+  @Field
+
+  private double range;
+
+
+
+}</pre></div><p>
+        </p>
+      </div>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>To read out properties, you could access the bean model directly. Common properties can be read out using the <code class="code">de.ars.daojones.runtime.beans.fields.Properties</code> helper class. It provides constants for property names and helper methods to read out common property values.</p>
+      </div>
+    </div>
+    <div class="section" title="Appended Fields"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="database_access_advanced_appended"></a>Appended Fields </h2></div></div></div>
+      
+      <p>In most cases, the field values are read out from the database, modified within the bean, and written back into the database. The database entry is then fully replaced by the bean value.</p>
+      <p>Sometimes, this behaviour is not intended, e.g.</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>if the value in the database is very large and would slow down the performance of your application</p>
+        </li><li class="listitem">
+          <p>if the value in the database is critical and should not be stored within a bean (and cached...)</p>
+        </li></ul></div>
+      <p>For this, fields provide a setting named <span class="italic">Update Policy</span>. This policy can have one of the following values:</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>
+            <span class="bold"><strong>REPLACE</strong></span> <span class="italic">(default)</span>: The field has to be fully replaced by the value that is given by the bean.</p>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>INSERT</strong></span>: The value, that is given by the bean, is inserted into the field at the top position.</p>
+        </li><li class="listitem">
+          <p>
+            <span class="bold"><strong>APPEND</strong></span>: The value, that is given by the bean, is inserted into the field at the bottom position.</p>
+        </li></ul></div>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>To avoid inserting or appending field values multiple times, the framework does not inject bean member values  with a policy of <span class="italic">INSERT</span> or <span class="italic">APPEND</span>. After storing a bean, fields with this policy are cleaned, if possible.</p>
+      </div>
+      <div class="programlistingco"><pre class="prettyprint language-java">@DataSource
+
+public class BusinessProcess {
+
+
+
+  @Field(value = "comments", updatePolicy = UpdatePolicy.APPEND)
+
+  private String comment;
+
+
+
+}</pre></div>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;5.&nbsp;Event Handling"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="events"></a>Chapter&nbsp;5.&nbsp;Event Handling </h1></div></div></div></div>
+    
+    <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+      <p>
+        <span class="bold"><strong>
+          <span class="underline">TODOs:</span>
+        </strong></span>
+      </p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>Connection Event Listener ist sp&auml;rlich, besser</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+              <p>Event bei CRUD-Operationen einer Connection</p>
+            </li><li class="listitem">
+              <p>Event beim Erzeugen, &Ouml;ffnen und Schlie&szlig;en einer Connection</p>
+            </li><li class="listitem">
+              <p>Event bei &Auml;nderungen am Datenmodell</p>
+            </li></ul></div>
+        </li><li class="listitem">
+          <p>Connection Events</p>
+        </li><li class="listitem">
+          <p>Model Events (see TODO ConfigurationModelManager)</p>
+        </li><li class="listitem">
+          <p>Interface f&uuml;r Beans -&gt; onUpdate, onDelete, afterRead... (@PostConstruct)</p>
+        </li></ul></div>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;6.&nbsp;Test Support"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="test_support"></a>Chapter&nbsp;6.&nbsp;Test Support </h1></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d5e805">JUnit Runner</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e812">Access the DaoJones environment</a></span></dt><dt><span class="section"><a href="#d5e826">Configure the test</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e847">JUnit Test Rule</a></span></dt><dt><span class="section"><a href="#d5e858">Java-based Test Model Configuration</a></span></dt><dt><span class="section"><a href="#d5e870">Hamcrest Matchers</a></span></dt><dt><span class="section"><a href="#test_support_driver">Test Driver </a></span></dt></dl></div>
+    
+    <p>Module tests should be designed to be</p>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>repeatable</p>
+      </li><li class="listitem">
+        <p>runnable in parallel</p>
+      </li><li class="listitem">
+        <p>isolated from the (productive) environment and from each other</p>
+      </li></ul></div>
+    <p>Therefore, the DaoJones context (if necessary for the test) has to be initialized once per test. The DaoJones Test Support provides this functionality in an easy-to-use way - as a JUnit Runner.</p>
+    <div class="section" title="JUnit Runner"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e805"></a>JUnit Runner</h2></div></div></div>
+      
+      <p>Run your test class with <code class="code">de.ars.daojones.runtime.test.junit.DaoJones</code> - that's the minimal condition.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">@RunWith(DaoJones.class)
+
+public class SimpleTest {
+
+
+
+  // your test methods here
+
+
+
+}</pre></div>
+      <div class="section" title="Access the DaoJones environment"><div class="titlepage"><div><div><h3 class="title"><a name="d5e812"></a>Access the DaoJones environment</h3></div></div></div>
+        
+        <p>You can then get access to the DaoJones environment per Dependency Injection. Supported is:</p>
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            <p>Field injection - create instance variables and annotate them with <code class="code">de.ars.daojones.runtime.test.junit.Inject</code>
+            </p>
+          </li><li class="listitem">
+            <p>Constructor injection - specify a constructor with arguments (annotation is optional)</p>
+          </li><li class="listitem">
+            <p>Parameter injection - extend your test method to the usage of parameters (annotation is optional)</p>
+          </li></ul></div>
+        <div class="programlistingco"><pre class="prettyprint language-java">@RunWith(DaoJones.class)
+
+public class Simple2Test {
+
+
+
+  // Field Injection
+
+  @Inject
+
+  private ConnectionProvider cp;
+
+
+
+  // Constructor Injection
+
+  public Simple2Test(final DaoJonesContext ctx) {
+
+    super();
+
+    // access the context
+
+  }
+
+
+
+  // Parameter Injection
+
+  @Test
+
+  public void testSth(final DaoJonesContextConfiguration config) {
+
+    // test your code
+
+  }
+
+
+
+}</pre></div>
+      </div>
+      <div class="section" title="Configure the test"><div class="titlepage"><div><div><h3 class="title"><a name="d5e826"></a>Configure the test</h3></div></div></div>
+        
+        <p>If you do not configure your test, a default configuration is used for a default DaoJones application. At least, the classpath is scanned for annotations to build the <a class="link" href="#concepts_bean_model" title="Bean Model">Bean Model</a>. And a single connection is configured for all bean types that uses the <a class="link" href="#test_support_driver" title="Test Driver">"DaoJones Test Driver"</a>. This driver allows to read the test data from an XML file or to define the model directly within the test class.</p>
+        <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+          <p>The name of the default test data file is <code class="code">&lt;test-class&gt;-model.xml</code>, where <code class="code">&lt;test-class&gt;</code> is the name of the test class. This file is searched within the classpath relative to the test class. If you use a different application id, the name of the data file is <code class="code">&lt;test-class&gt;-model-&lt;application&gt;.xml</code>. You can query the model file name at runtime using <code class="code">DaoJones.getModelFile(testClass, application)</code>.</p>
+        </div>
+        <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+          <p>As described below, each test class has its own bundle of test model files by default. This is because of the isolation of tests.</p>
+        </div>
+        <p>If you want to configure your own connections or bean models, you can use the <code class="code">@Config</code> annotation. Annotate the test class to get all tests configured the same, or annotate a test method to configure the single test. If you have multiple configurations, you can collect them with the <code class="code">@Configs</code> annotation. The get the classpath scanned for the bean model annotations,  do not configure any custom bean model xml file or (if so) use <code class="code">@ConfigAnnotations</code>. With these annotations, you can derive from the default application id by optionally defining a custom application id.</p>
+        <p>The following example demonstrates all the features:</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">@RunWith(DaoJones.class)
+
+/*
+
+ * Configure test-default application with custom connections.
+
+ * This is a test-class-wide configuration,
+
+ * i.e. valid for all test methods within this class.
+
+ */
+
+@Config("ConfiguredTestConnections.xml")
+
+/*
+
+ * The XML file is searched within the classpath relative to the test class.
+
+ * To search the file at an absolute position within the classpath,
+
+ * start the path with a slash "/"
+
+ */
+
+public class ConfiguredTest {
+
+
+
+  @Test
+
+  /*
+
+   * Multiple configurations bundled with @Configs.
+
+   * These configurations are only used for this test method. 
+
+   */
+
+  @Configs({
+
+      // Configure connections for the custom application "mytest"
+
+      @Config(application = "mytest", value = "/mytest-connections.xml"),
+
+      // Configure beans for the custom application "mytest"
+
+      @Config(application = "mytest", value = "/mytest-beans.xml", type = ConfigType.BEANS) })
+
+  /*
+
+   * Scan classpath for annotations for application "mytest".
+
+   * This is necessary because of the customized bean model configuration upon.
+
+   */
+
+  @ConfigAnnotations(application = "mytest")
+
+  // To get any element of "mytest", you have to use @Inject for parameters too.
+
+  public void testSth1(@Inject(application = "mytest") final ConnectionProvider cp) {
+
+    // your test goes here...
+
+  }
+
+
+
+}</pre></div>
+      </div>
+    </div>
+    <div class="section" title="JUnit Test Rule"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e847"></a>JUnit Test Rule</h2></div></div></div>
+      
+      <p>JUnit 4.8 introduced the Rule mechanism to configure test methods in a more flexible way. You can get the DaoJones environment configured too by a rule. This could be necessary, if you want to use another JUnit runner (e.g. for parameterized tests). Just define a rule inside of your test class. Be aware that JUnit expects the rule variable to be declared as <code class="code">public</code>. The test class and the test method can be annotated the same way like the runner expects.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">@SuppressWarnings("unused")
+
+public class RuleBasedTest {
+
+
+
+  // The runner class provides the rule.
+
+  @Rule
+
+  public DaoJones.Rule dj = DaoJones.asRule(this);
+
+
+
+  @Before
+
+  public void init() {
+
+    // Access to the environment using the rule object.
+
+    final ConnectionProvider cp = dj.getConnectionProvider();
+
+  }
+
+
+
+  @Test
+
+  public void testSth() {
+
+    // your test goes here - accessing the rule is possible too
+
+  }
+
+
+
+}</pre></div>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>The rule is restricted to configure and provide the DaoJones environment. Dependency Injection to fields, constructors and test methods is not possible. You then have to go by what the runner expects (default constructor and test methods without parameters by default).</p>
+      </div>
+      <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+        <p>Although it is possible to use the DaoJones JUnit Rule as class or suite level rule, it is not intended to be used this way because of the independency of tests. In other words, the test must not be dependent from being run within a suite or standalone.</p>
+      </div>
+    </div>
+    <div class="section" title="Java-based Test Model Configuration"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e858"></a>Java-based Test Model Configuration</h2></div></div></div>
+      
+      <p>If you use the default connection configuration, the test support allows to configure the test model using annotations instead of an XML file. You then can create instances of  <code class="code">DataSource</code> (Package <code class="code">de.ars.daojones.runtime.test.data</code>) and assign them to annotated instance variables. For simple creation of such models, you can use the <code class="code">TestModelBuilder</code> class. This feature is available for both the JUnit Runner and the JUnit Test Rule.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">@RunWith(DaoJones.class)
+
+public class TestModelTest {
+
+
+
+  // your test model
+
+  @TestModel
+
+  private DataSource ds = TestModelBuilder
+
+  // &lt;datasource name="Memo"&gt;
+
+          .newDataSource("Memo").withEntries(
+
+          // &lt;entry id="id1"&gt;
+
+                  TestModelBuilder.newEntry().withId("id1")
+
+                  // &lt;property name="sender" value="doe@acme.com"/&gt;
+
+                          .withProperty("sender", "doe@acme.com")
+
+          // &lt;/entry&gt;
+
+          // &lt;/datasource&gt;
+
+          ).build();
+
+
+
+}</pre></div>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>The data source instance is used directly be the connection to execute queries and updates. It is possible to modify the data source before the test (even replace the instance) and verify the instance after the test. To leave tests isolated, do not declare the field <code class="code">static</code>. Otherwise, this is a class-level data source instance that is shared between multiple tests within the test class.</p>
+      </div>
+    </div>
+    <div class="section" title="Hamcrest Matchers"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e870"></a>Hamcrest Matchers</h2></div></div></div>
+      
+      <p>To verify your results, DaoJones provides a couple of matchers. These matchers are helpful to verify the results, if you used the Java-based test model configuration.</p>
+      <div class="programlistingco"><pre class="prettyprint language-java">@RunWith(DaoJones.class)
+
+public class TestModelMatchersTest {
+
+
+
+  private Entry entry1 = TestModelBuilder.newEntry().withId("id1")
+
+          .withProperty("sender", "doe@acme.com").build();
+
+
+
+  @TestModel
+
+  private DataSource ds = TestModelBuilder.newDataSource("Memo").withEntries(entry1)
+
+          .build();
+
+
+
+  @Test
+
+  public void testRead(final ConnectionProvider cp) throws DataAccessException {
+
+    final Connection&lt;Memo&gt; con = cp.getConnection(Memo.class);
+
+    try {
+
+      final Memo memo = con.find();
+
+      // is the memo bean read from entry1?
+
+      Assert.assertThat(memo.getId(), DaoJonesMatchers.isMappedTo(entry1));
+
+    } finally {
+
+      con.close();
+
+    }
+
+  }
+
+
+
+  @Test
+
+  public void testDelete(final ConnectionProvider cp) throws DataAccessException {
+
+    final Connection&lt;Memo&gt; con = cp.getConnection(Memo.class);
+
+    try {
+
+      // Delete all!
+
+      con.delete(Query.create());
+
+      // is the entry1 removed?
+
+      Assert.assertThat(ds, Matchers.not(DaoJonesMatchers.hasEntry("id1")));
+
+    } finally {
+
+      con.close();
+
+    }
+
+  }
+
+
+
+}</pre></div>
+    </div>
+    <div class="section" title="Test Driver"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="test_support_driver"></a>Test Driver </h2></div></div></div>
+      
+      <p>The test database driver (id: <code class="code">de.ars.daojones.drivers.test</code>) is a driver that allows to configure test data within an XML file. The path of the XML file is the path that is specified as <code class="code">database</code> within the connection configuration. (As described below, this database name is dependent from the test class and the application id, so each test class has its own bundle of files.)</p>
+      <div class="programlistingco"><pre class="prettyprint language-xml">&lt;dj:model xmlns:dj="http://www.ars.de/daojones/2.0/testmodel"&gt;
+
+  &lt;dj:datasource name="MixedForm" type="table"&gt;
+
+    &lt;dj:entry id="entry1"&gt;
+
+      &lt;dj:property name="name" value="Entry 1"/&gt;
+
+    &lt;/dj:entry&gt;
+
+    &lt;dj:entry id="entry2"&gt;
+
+      &lt;dj:property name="name" value="Entry 2"/&gt;
+
+      &lt;dj:property name="generated" value="true"/&gt;
+
+    &lt;/dj:entry&gt;
+
+    &lt;dj:entry id="entry3"&gt;
+
+      &lt;dj:property name="name" value="Entry 3"/&gt;
+
+    &lt;/dj:entry&gt;
+
+  &lt;/dj:datasource&gt;
+
+&lt;/dj:model&gt;</pre></div>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>It is possible to store Resources (BLOBs, CLOBs, Attachments) within the XML file. Such a resource is represented by a RFC-2397 data url.</p>
+      </div>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>Reading and writing the default field types is fully supported by the test driver. If you need to read custom types (esp. those that the database driver declares and supports), you can implement the <code class="code">de.ars.daojones.runtime.test.DataHandler</code> interface. The implementation has to be registered using the ServiceLoader API.</p>
+      </div>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>Typically, you do not configure any connections when using Java-based test model setup. To use the Notes test driver, you have to use the <code class="code">@ConfigDriver</code> annotation: </p><div class="programlistingco"><pre class="prettyprint language-java">@RunWith(DaoJones.class)
+
+@ConfigDriver(NotesDriverConfiguration.DRIVER_ID)
+
+public class TestModelWithDriver {
+
+
+
+  // ...
+
+
+
+}</pre></div><p>
+        </p>
+      </div>
+      <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+        <p>The Notes driver allows to search a view using a view bean, and reading out the document-mapped bean using the <code class="code">@DocumentMapped</code> annotation. To simulate this with the test model, you specify a <code class="code">@mapping</code> property to the view entry as shown below: </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;dj:model xmlns:dj="http://www.ars.de/daojones/2.0/testmodel"&gt;
+
+
+
+  &lt;!-- Entry for document-mapped bean --&gt;
+
+  &lt;dj:datasource name="MixedForm" type="table"&gt;
+
+    &lt;dj:entry id="entry1"&gt;
+
+      &lt;dj:property name="name" value="Entry 1"/&gt;
+
+    &lt;/dj:entry&gt;
+
+  &lt;/dj:datasource&gt;
+
+
+
+  &lt;!-- Entry for document-mapped bean --&gt;
+
+  &lt;dj:datasource name="MixedView" type="view"&gt;
+
+    &lt;dj:entry id="viewEntry1"&gt;
+
+      &lt;dj:property name="?1" value="Entry 1"/&gt;
+
+      &lt;!-- Reference to document-mapped entry --&gt;
+
+      &lt;dj:property name="@mapping" value="entry1"/&gt;
+
+    &lt;/dj:entry&gt;
+
+  &lt;/dj:datasource&gt;
+
+
+
+&lt;/dj:model&gt;</pre></div><p> </p><div class="programlistingco"><pre class="prettyprint language-java">@SuppressWarnings("unused")
+
+@RunWith(DaoJones.class)
+
+@ConfigDriver(NotesDriverConfiguration.DRIVER_ID)
+
+public class TestDocumentMapped {
+
+
+
+  // ...
+
+
+
+  // View Entry with reference to document entry
+
+  private final Entry viewEntry1 = TestModelBuilder.newEntry() //
+
+          .withId("viewentry1") //
+
+          .withProperty("?1", "Entry 1") //
+
+          .withProperty(NotesTestModel.DOCUMENT_MAPPING_PROPERTY, "entry1") //
+
+          .build();
+
+
+
+}</pre></div><p>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;7.&nbsp;Integration"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="integration"></a>Chapter&nbsp;7.&nbsp;Integration </h1></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d5e908">OSGi Integration</a></span></dt><dt><span class="section"><a href="#d5e912">Enterprise Java Integration</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e929">CDI</a></span></dt><dt><span class="section"><a href="#d5e935">Web Modules</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e1064">Lotus Notes Agents</a></span></dt></dl></div>
+    
+    <p>This chapter describes the integration of the DaoJones runtime into different environments. The DaoJones context initialization and management should be done by such environments, if possible. The application developer has to provide configuration files and should be able to access the DaoJones environment in a familiar way.  </p>
+    <div class="section" title="OSGi Integration"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e908"></a>OSGi Integration</h2></div></div></div>
+      
+      <p>Erweiterung folgender Typen Activator: ServiceLoader &amp;&amp; Annotations Activator direkt einsetzen, als Oberklasse oder als Delegate alternativ ServiceLoader Mediator nutzen, jedoch statisch, also nur f&uuml;r bestimmte Typen DaoJonesBundle f&uuml;r Zugriff auf Bundle-Managed Context -&gt; sollte ausreichen. Bei eigenem Context -&gt; an Bundle-Lifecycle binden, ServiceLoader-Dinge werden immer geladen, OSGi Services nicht automatisch</p>
+      <p>DaoJones libraries are automatically packaged with OSGi bundle headers, so they can be </p>
+    </div>
+    <div class="section" title="Enterprise Java Integration"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e912"></a>Enterprise Java Integration</h2></div></div></div>
+      
+      <p>Java Enterprise environments typically</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>are managed environments, so they are configured by an administrator and initialized automatically by the runtime environment,</p>
+        </li><li class="listitem">
+          <p>are multi-threaded (thread managed),</p>
+        </li><li class="listitem">
+          <p>run multi-module applications,</p>
+        </li><li class="listitem">
+          <p>have hierarchical classloaders,</p>
+        </li><li class="listitem">
+          <p>run applications on multiple servers (cluster) incl. replication of objects and</p>
+        </li><li class="listitem">
+          <p>have higher requirements to security and isolation of applications</p>
+        </li></ul></div>
+      <p>DaoJones is intended to be used in such environments too. Therefore, the connections are implemented to be thread-safe. </p>
+      <div class="section" title="CDI"><div class="titlepage"><div><div><h3 class="title"><a name="d5e929"></a>CDI</h3></div></div></div>
+        
+        <p>Within a CDI environment, the DaoJones context is managed as an application-scoped instance. It is possible to get the environment objects injected by the CDI container as shown below:</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">@ManagedBean
+
+public class SampleBean {
+
+
+
+  @Inject
+
+  private DaoJonesContext djContext;
+
+
+
+  @Inject
+
+  private DaoJonesContextConfiguration djConfig;
+
+
+
+  @Inject
+
+  @DaoJonesApplication("myApp")
+
+  private Application djApplication;
+
+
+
+  @Inject
+
+  @DaoJonesApplication("myApp")
+
+  private ConnectionProvider djConnectionprovider;
+
+
+
+  @Inject
+
+  @DaoJonesApplication("myApp")
+
+  private Connection&lt;Memo&gt; connection;
+
+
+
+}</pre></div>
+      </div>
+      <div class="section" title="Web Modules"><div class="titlepage"><div><div><h3 class="title"><a name="d5e935"></a>Web Modules</h3></div></div></div>
+        
+        <p>The DaoJones context instance is lifecycle-managed by CDI and can be injected into web components as well. Additionally, the instance is automatically configured during application startup and shutdown. Therefore, each web application gets a DaoJones application id which follows by default the pattern <code class="code">&lt;module&gt;#&lt;ear&gt;#web-app</code>. Within the context of a web application, a DaoJones application id is not necessary   for the CDI injection of a connection provider or DaoJones application instance.</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">@ManagedBean
+
+public class SampleWebBean {
+
+
+
+  @Inject
+
+  private ConnectionProvider djConnectionprovider;
+
+
+
+  @Inject
+
+  private Connection&lt;Memo&gt; connection;
+
+
+
+}</pre></div>
+        <p>The DaoJones environment is made available within the web application scope and represented by the <code class="code">DaoJonesEnvironment</code> interface. You can access the instance using a helper class named <code class="code">WebApplication</code>.</p>
+        <p>
+          </p><div class="figure"><a name="d5e946"></a><p class="title"><b>Figure&nbsp;7.1.&nbsp;The DaoJones Environment</b></p><div class="figure-contents">
+            
+            <div class="mediaobject" align="center"><img src="images/content/integration/daojonesenvironment.png" align="middle" alt="The DaoJones Environment"></div>
+          </div></div><p><br class="figure-break">
+        </p>
+        <p>A sample tag handler could look like this:</p>
+        <div class="programlistingco"><pre class="prettyprint language-java">public class PrintEnvironmentTag extends SimpleTagSupport {
+
+
+
+  @Override
+
+  public void doTag() throws JspException, IOException {
+
+    final DaoJonesEnvironment dj = WebApplication.getEnvironment(getJspContext());
+
+    final JspWriter out = getJspContext().getOut();
+
+    try {
+
+      // "DaoJones Runtime"
+
+      out.print(dj.getTitle());
+
+      out.print(" ");
+
+      // e.g. "2.0.0"
+
+      out.println(dj.getVersion());
+
+      // DaoJones application id assigned to this web application
+
+      out.println(dj.getApplication().getApplicationId());
+
+    } finally {
+
+      out.close();
+
+    }
+
+  }
+
+
+
+}</pre></div>
+        <p>The <code class="code">DaoJonesEnvironment</code> is also available within JSPs and Tag Files as an implicit object that is named <code class="code">dj</code> by default. The sample tag handler could be implemented alternatively as a tag file:    </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"&gt;
+
+
+
+  &lt;c:out value="${dj.title} ${dj.version}"/&gt;
+
+  &lt;c:out value="${dj.application.applicationId}"/&gt;
+
+
+
+&lt;/jsp:root&gt;</pre></div><p>
+        </p>
+        <p>Of course, it can be used within a JSF application (JSF Managed Beans, Facelets and other Faces Components) too. </p>
+        <div class="section" title="Web Application Configuration"><div class="titlepage"><div><div><h4 class="title"><a name="d5e964"></a>Web Application Configuration</h4></div></div></div>
+          
+          <p>Web applications are configurable via context parameters that are specified within the web deployment descriptor. DaoJones allows to configure the context initialization process with a couple of parameters that are documented here:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>
+                <code class="code">daojones.CONNECTION_CONFIG_FILES</code> (default: <code class="code">WEB-INF/daojones-connections.xml,META-INF/daojones-connections.xml</code>)   defines the comma-separated list of connection configuration files. The classpath of the web application is scanned for these files, so   they could be placed within a JAR file that is located under the <code class="code">WEB-INF/lib</code> directory.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">daojones.BEAN_CONFIG_FILES</code> (default: <code class="code">WEB-INF/daojones-beans.xml,META-INF/daojones-beans.xml</code>)   defines the comma-separated list of bean configuration files. The classpath of the web application is scanned for these files, so   they could be placed within a JAR file that is located under the <code class="code">WEB-INF/lib</code> directory.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">daojones.SCAN_ANNOTATIONS</code> (default: <code class="code">true</code>)   defines whether the classpath of the web application is scanned for annotations or not. This allows to declare bean models with   directly annotating the corresponding Java elements.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">daojones.APPLICATION</code> (default: <code class="code">web-app</code>)   influences the name of the DaoJones application id that is assigned to this web application.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">daojones.APPLICATION_SCOPE</code> (default: <code class="code">module</code>)   defines the scope of the DaoJones application id that is assigned to this web application. The scope is encoded within the DaoJones application id   as described below. (<code class="code">&lt;app&gt;</code> is the value of the <code class="code">daojones.APPLICATION</code> initialization parameter)</p>
+              <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                  <p>
+                    <code class="code">public</code>: <code class="code">&lt;app&gt;</code> is used directly as the name of the DaoJones application id.</p>
+                </li><li class="listitem">
+                  <p>
+                    <code class="code">application</code>: The name of the EAR is encoded into the DaoJones application id (<code class="code">&lt;ear&gt;#&lt;app&gt;</code>).</p>
+                </li><li class="listitem">
+                  <p>
+                    <code class="code">module</code>: The name of the EAR and WAR module are both encoded into the DaoJones application id (<code class="code">&lt;ear&gt;#&lt;war&gt;#&lt;app&gt;</code>).</p>
+                </li></ul></div>
+            </li><li class="listitem">
+              <p>
+                <code class="code">daojones.ENV_NAME</code> (default: <code class="code">dj</code>)   defines the name of the <code class="code">DaoJonesEnvironment</code> object (and the JSP/Facelet-implicit object) within the application scope.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">daojones.SKIP_CONFIG</code> (default: <code class="code">false</code>)   suppresses the automatic initialization of the DaoJones environment, if <code class="code">true</code>. The <code class="code">DaoJonesEnvironment</code> object will get initialized anyway   to avoid NullPointerExceptions.</p>
+            </li></ul></div>
+          <p>You can programmatically read the names of the parameters, their default values and their value for the current web application instance using the <code class="code">Configuration</code> class.</p>
+          <p>
+            </p><div class="figure"><a name="d5e1019"></a><p class="title"><b>Figure&nbsp;7.2.&nbsp;The DaoJones Environment</b></p><div class="figure-contents">
+              
+              <div class="mediaobject" align="center"><img src="images/content/integration/configuration.png" align="middle" alt="The DaoJones Environment"></div>
+            </div></div><p><br class="figure-break">
+          </p>
+          <p>If you have a single web module with DaoJones annotated beans, your first steps would be:</p>
+          <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+              <p>Put the DaoJones Web Integration JAR into the <code class="code">WEB-INF/lib</code> directory.</p>
+            </li><li class="listitem">
+              <p>Create a <code class="code">daojones-connections.xml</code> under the <code class="code">WEB-INF</code> folder and configure the connections there.</p>
+            </li><li class="listitem">
+              <p>Create a <code class="code">daojones-beans.xml</code> under the <code class="code">WEB-INF</code> folder to get the annotated classes found by the annotation scanner. The file must contain at least the XML root element.</p>
+            </li><li class="listitem">
+              <p>That's it!</p>
+            </li></ol></div>
+          <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+            <p>
+              <span class="bold"><strong>
+                <span class="underline">TODOs:</span>
+              </strong></span>
+            </p>
+            <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>EJBs</p>
+              </li><li class="listitem">
+                <p>JAAS Provider</p>
+              </li><li class="listitem">
+                <p>JSR 303 Bean Validation before updating!!!</p>
+              </li></ul></div>
+          </div>
+          <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+            <p>
+              <span class="bold"><strong>
+                <span class="underline">TODOs:</span>
+              </strong></span>
+            </p>
+            <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>OSGi</p>
+                <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                    <p>simple</p>
+                  </li><li class="listitem">
+                    <p>OSGi Enterprise</p>
+                  </li></ul></div>
+              </li></ul></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section" title="Lotus Notes Agents"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e1064"></a>Lotus Notes Agents</h2></div></div></div>
+      
+      <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+        <p>
+          <span class="bold"><strong>
+            <span class="underline">TODOs:</span>
+          </strong></span>
+        </p>
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            <p>Notes (z.B. Agenten)</p>
+          </li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;8.&nbsp;Drivers"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="drivers"></a>Chapter&nbsp;8.&nbsp;Drivers </h1></div></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d5e1076">Database Drivers</a></span></dt><dd><dl><dt><span class="section"><a href="#drivers_notes">IBM Lotus Notes </a></span></dt><dt><span class="section"><a href="#drivers_test">Test Database Driver </a></span></dt><dt><span class="section"><a href="#d5e1601">Implement custom database drivers</a></span></dt></dl></dd><dt><span class="section"><a href="#d5e1614">Cache Drivers</a></span></dt><dd><dl><dt><span class="section"><a href="#d5e1620">DaoJones InMemory</a></span></dt><dt><span class="section"><a href="#d5e1630">IBM WebSphere Dynamic Cache Service</a></span></dt><dt><span class="section"><a href="#d5e1662">Implement custom cache drivers</a></span></dt></dl></dd></dl></div>
+    
+    <p>This chapter describes the different driver types that can extend the functionality of DaoJones. The main driver implementations and their driver-specific settings and behaviour are also listed and explained. </p>
+    <div class="section" title="Database Drivers"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e1076"></a>Database Drivers</h2></div></div></div>
+      
+      <p>A database driver is responsible for accessing one type of database during runtime. Each connection refers to a database driver to delegate the CRUD operations. Currently, the driver for IBM Lotus Notes is currently the only existing implementation. DaoJones is not restricted to any type of database, so there could be drivers for JDBC, object-based databases or event XML files.</p>
+      <div class="section" title="IBM Lotus Notes"><div class="titlepage"><div><div><h3 class="title"><a name="drivers_notes"></a>IBM Lotus Notes </h3></div></div></div>
+        
+        <p>The <span class="italic">DaoJones Driver for IBM Lotus Notes</span> maps the bean models to documents and views within a Lotus Notes database. It queries the database by using the Notes Formula Query Language. It is possible to use a local Notes client installation to access the database, which allows to use the current user session while the client is open, so a user name and password must not be specified within the connection configuration (see chapter <a class="link" href="#notes_local_access" title="Local Client Access">"Local Client Access"</a> for details).</p>
+        <p>The driver has a public API that provides Notes-specific data types that can be used within your application. Be aware that - in such case - your application code gets driver-dependent.</p>
+        <div class="section" title="Use the Notes driver"><div class="titlepage"><div><div><h4 class="title"><a name="d5e1085"></a>Use the Notes driver</h4></div></div></div>
+          
+          <p>To use the Notes driver,</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>the jar file must be in the classpath. It is not necessary to define a dependency to the driver at compile-time while you do not use any classes directly within your application. The driver then is found by DaoJones automatically.</p>
+            </li><li class="listitem">
+              <p>the Notes.jar file provided by IBM must be in the classpath too </p>
+            </li><li class="listitem">
+              <p>you must use the id of the connection factory within the connection configuration (see the XML-file-based example below). </p>
+            </li></ul></div>
+          <div class="programlistingco"><pre class="prettyprint language-xml">&lt;configuration xmlns="http://www.ars.de/daojones/2.0/connections"&gt;
+
+
+
+  &lt;connection id="memo" name="Email Inbox" type="de.ars.daojones.drivers.notes"&gt;
+
+    &lt;database&gt;notes:///C1547121FC3A2141?version=1.1&amp;amp;type=replica&amp;amp;server=acme.com&lt;/database&gt;
+
+    &lt;credential type="static"&gt;
+
+      &lt;property name="username" value="johndoe"/&gt;
+
+      &lt;property name="password" value="mysecret"/&gt;
+
+    &lt;/credential&gt;
+
+    &lt;for-class&gt;de.ars.daojones.example.mails.Memo&lt;/for-class&gt;
+
+  &lt;/connection&gt;
+
+  
+
+&lt;/configuration&gt;</pre></div>
+        </div>
+        <div class="section" title="Notes Database Path"><div class="titlepage"><div><div><h4 class="title"><a name="d5e1098"></a>Notes Database Path</h4></div></div></div>
+          
+          <p>The database path specified within the connection model need to follow the rules of the notes driver.   The Notes Database Path is an URI that consists of</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>
+                <code class="code">
+                  <a class="ulink" href="notes://" target="_top">notes://</a> </code>as the protocol name</p>
+            </li><li class="listitem">
+              <p>The name or IP address of the Notes server. If not specified, the local Notes client is used to communicate with the Notes server.</p>
+            </li><li class="listitem">
+              <p>The path to the NSF file or a replica id of the database.</p>
+            </li><li class="listitem">
+              <p>A type parameter that specifies if the NSF file or a replica id is part of the URI.</p>
+            </li><li class="listitem">
+              <p>A server parameter to specify the server on which the replica of the database is opened. <span class="italic">This parameter is only used for local client access to a replica id. This must not be the server that the DaoJones client communicates with. (See examples below.)</span>
+              </p>
+            </li><li class="listitem">
+              <p>A version parameter with a current value of <code class="code">1.1 </code>(for future purposes)</p>
+            </li></ul></div>
+          <p>
+            <span class="underline">Examples:</span>
+          </p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>This URI opens the database company/employees.nsf on server acme.com:   <code class="code">
+                  <a class="ulink" href="notes://acme.com/company/employees.nsf?version=1.1" target="_top">notes://acme.com/company/employees.nsf?version=1.1</a> </code>
+              </p>
+            </li><li class="listitem">
+              <p>This URI opens the database company/employees.nsf using the local Notes client:   <code class="code">
+                  <a class="ulink" href="notes:///company/employees.nsf?version=1.1" target="_top">notes:///company/employees.nsf?version=1.1</a> </code>
+              </p>
+            </li><li class="listitem">
+              <p>This URI opens the replica of the database with the given replica id on server acme.com:   <code class="code">
+                  <a class="ulink" href="notes://acme.com/C1257421103A2141?version=1.1&amp;type=replica" target="_top">notes://acme.com/C1257421103A2141?version=1.1&amp;type=replica</a> </code>
+              </p>
+            </li><li class="listitem">
+              <p>This URI opens the replica of the database with the given replica id on server acme.com (using the local Notes client):   <code class="code">
+                  <a class="ulink" href="notes:///C1257421103A2141?version=1.1&amp;type=replica&amp;server=acme.com" target="_top">notes:///C1257421103A2141?version=1.1&amp;type=replica&amp;server=acme.com</a> </code>
+              </p>
+            </li></ul></div>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>Parsing or creating the path is implemented by the public class <code class="code">de.ars.daojones.drivers.notes.NotesDatabasePath</code>.</p>
+          </div>
+        </div>
+        <div class="section" title="JAAS Integration"><div class="titlepage"><div><div><h4 class="title"><a name="notes_jaas_callbackhandler"></a>JAAS Integration </h4></div></div></div>
+          
+          <p>The example below shows the possibility to use a custom <code class="code">javax.security.auth.callback.CallbackHandler</code> to allow dynamic log-ins. </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;configuration xmlns="http://www.ars.de/daojones/2.0/connections"&gt;
+
+
+
+  &lt;connection factory="de.ars.daojones.drivers.notes" id="memo" name="Email Inbox"&gt;
+
+    &lt;database&gt;notes:///C1547121FC3A2141?version=1.1&amp;amp;type=replica&amp;amp;server=acme.com&lt;/database&gt;
+
+    &lt;credential type="generic"&gt;
+
+      &lt;property name="class" value="your.callbackhandler.implementation.Class"/&gt;
+
+    &lt;/credential&gt;
+
+    &lt;for-class&gt;de.ars.daojones.example.mails.Memo&lt;/for-class&gt;
+
+  &lt;/connection&gt;
+
+
+
+&lt;/configuration&gt;</pre></div><p>
+          </p>
+          <p>The Notes driver requests the following callbacks in the order listed below:</p>
+          <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+              <p>
+                <span class="bold"><strong>Initialization</strong></span>: Requesting the complete database path</p>
+              <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+                  <p>
+                    <code class="code">de.ars.daojones.drivers.notes.security.NotesDatabasePathCallback</code>
+                  </p>
+                </li></ol></div>
+            </li><li class="listitem">
+              <p>
+                <span class="bold"><strong>Connection Setup</strong></span>: Requesting the authority (local client or remote connection)</p>
+              <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+                  <p>
+                    <code class="code">de.ars.daojones.drivers.notes.security.AuthorityCallback</code>
+                  </p>
+                </li></ol></div>
+            </li><li class="listitem">
+              <p>
+                <span class="bold"><strong>Authentication Setup (silent)</strong></span>: Requesting a token for token-based authentication</p>
+              <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+                  <p>
+                    <code class="code">de.ars.daojones.drivers.notes.security.TokenCallback</code>
+                  </p>
+                </li></ol></div>
+            </li><li class="listitem">
+              <p>
+                <span class="bold"><strong>User Interaction Setup</strong></span>: If a token is not available - because a user interaction is required, requesting the user's language.</p>
+              <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+                  <p>
+                    <code class="code">javax.security.auth.callback.LanguageCallback</code>
+                  </p>
+                </li></ol></div>
+            </li><li class="listitem">
+              <p>
+                <span class="bold"><strong>Authentication Setup (UI)</strong></span>: Requesting username and password.</p>
+              <div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+                  <p>
+                    <code class="code">javax.security.auth.callback.NameCallback</code>
+                  </p>
+                </li><li class="listitem">
+                  <p>
+                    <code class="code">javax.security.auth.callback.PasswordCallback</code>
+                  </p>
+                </li></ol></div>
+            </li></ol></div>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>To modify the messages for the name and password callbacks, create a resource bundle <code class="code">de.ars.daojones.drivers.notes.security.CallbackMessages</code> with the keys <code class="code">NameCallback.prompt</code> and <code class="code">PasswordCallback.prompt</code>.</p>
+          </div>
+        </div>
+        <div class="section" title="Type Mapping"><div class="titlepage"><div><div><h4 class="title"><a name="d5e1192"></a>Type Mapping</h4></div></div></div>
+          
+          <p>The following table shows details about the mapping of Java types to Notes document fields.</p>
+          <table id="d5e1195" class="table table-condensed">
+            <caption>Table&nbsp;8.1.&nbsp;Type Mapping Table</caption>
+            <thead>
+              <tr>
+                <th>Java type</th>
+                <th>Notes field type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code class="code">java.lang.String</code>
+                </td>
+                <td>Text</td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">java.lang.Character</code>
+                </td>
+                <td>Text <span class="italic">(only first character is read)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">java.lang.Boolean</code>
+                </td>
+                <td>Text <span class="italic">(any other value than <code class="code">"true"</code> is <code class="code">false</code>)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">java.lang.Number</code> and all sub-types</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">java.util.Date</code>
+                </td>
+                <td>Date/Time</td>
+              </tr>
+              <tr>
+                <td>Primitive Types</td>
+                <td>
+                  <span class="italic">(same as their wrapper types)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Enumerations</td>
+                <td>Text <span class="italic">(name of the literal)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">de.ars.daojones.runtime.beans.identification.Identificator</code>
+                </td>
+                <td>Text <span class="italic">(Universal ID of a referenced document)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">de.ars.daojones.runtime.beans.fields.Resource</code>
+                </td>
+                <td>
+                  <span class="italic">(Attachment, see chapter <a class="link" href="#database_access_advanced_resources" title="Resources">"Resources"</a>)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">de.ars.daojones.drivers.notes.types.Principal</code> and all sub-types</td>
+                <td>Names <span class="italic">(see chapter <a class="link" href="#notes_names" title="Names, Authors &amp; Readers">"Names, Authors &amp; Readers"</a>)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">de.ars.daojones.drivers.notes.types.Status</code>
+                </td>
+                <td>
+                  <span class="italic">(no field access)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Arrays</td>
+                <td>
+                  <span class="italic">(multi-value fields with the same type as their component types)</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>If you need to map a custom type to a document field type (e.g. you need support for the types that are currently not supported like Rich Text fields), you can implement a <code class="code">DataHandler</code>. See chapter <a class="link" href="#notes_extensions" title="Extending the Notes driver">"Extending the Notes driver"</a> for details.</p>
+          </div>
+        </div>
+        <div class="section" title="Queries"><div class="titlepage"><div><div><h4 class="title"><a name="d5e1264"></a>Queries</h4></div></div></div>
+          
+          <p>The Notes driver executes queries as quick as possible. If a query searches for multiple bean types, a formula query is created that selects multiple forms at the same time. So, if all bean types are mapped to a document type (a <span class="italic">Form</span>), one query is sent to the Notes server.</p>
+          <p>For each bean type, that is mapped to a view, one additional query is made where the view is selected and searched for the given criteria. Such a query is faster when the searched view is indexed. A bean that is mapped to a view can be updated only if it does not contain any field mapping to calculated view columns. If a view contains a single calculated column mapped to the bean, the whole view and its entries can only be read out.</p>
+          <p>To execute a query, the Notes driver must create a formula based on the given search criteria. Therefore, multiple components are used by the driver:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>An <code class="code">Encoder</code> converts a literal (e.g. a string, a number or a date that a field is compared too) to a formula-language-compatible text.</p>
+            </li><li class="listitem">
+              <p>A <code class="code">QueryLanguageBuilder</code> creates the formula language for a single type of search criterion. It can use <code class="code">Encoders</code> to convert literals.</p>
+            </li><li class="listitem">
+              <p>A <code class="code">ComparisonBuilder</code> creates the formula language for a single type of Comparison, which is part of the FieldComparison criterion. </p>
+            </li></ul></div>
+          <p>You can create custom implementations of these components to support custom literals, search criteria or comparisons. See chapter <a class="link" href="#notes_extensions" title="Extending the Notes driver">"Extending the Notes driver"</a> for details.</p>
+        </div>
+        <div class="section" title="Names, Authors &amp; Readers"><div class="titlepage"><div><div><h4 class="title"><a name="notes_names"></a>Names, Authors &amp; Readers </h4></div></div></div>
+          
+          <p>If you need to read or create Names fields, the Notes driver provides a custom Java type <code class="code">Principal</code> and its sub-types <code class="code">User</code> and <code class="code">Address</code> (Package <code class="code">de.ars.daojones.drivers.notes.types</code>). If you use a field (single or array) of type</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>
+                <code class="code">User</code>, the driver reads and writes users or user groups in flat or hierarchical form, e.g. <code class="code">CN=John Doe/O=ACME/C=US</code>.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">Address</code>, the driver reads and writes RFC822 internet addresses, e.g <code class="code">John Doe &lt;john.doe@acme.com&gt; (Customer)</code>.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">Principal</code>, both types are allowed within the field. The driver differs between both types by searching for an <code class="code">@</code>-address while reading out.</p>
+            </li></ul></div>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>IBM Lotus Notes only has a <code class="code">NotesName</code> class representing both users and internet addresses. The DaoJones Notes driver splits these types to provide an API that is easier to use.</p>
+          </div>
+          <p>If you want a Names field to be marked as an <span class="italic">Authors</span> or <span class="italic">Readers</span> field, you have to specify a meta information (property) with the name <span class="italic">field-type</span> and a value of <span class="italic">authors</span> or <span class="italic">readers</span> to the field mapping. If you use XML to declare the bean mapping, use the <code class="code">&lt;meta .../&gt;</code> tag. </p><div class="programlistingco"><pre class="prettyprint language-xml">&lt;beans-config xmlns="http://www.ars.de/daojones/2.0/beans"&gt;
+
+  &lt;bean type="de.ars.daojones.example.Note"&gt;
+
+    &lt;type-mapping name="Note"/&gt;
+
+    &lt;field name="author"&gt;
+
+      &lt;field-mapping name="Author"&gt;
+
+        &lt;meta name="field-type" value="authors"/&gt;
+
+      &lt;/field-mapping&gt;
+
+    &lt;/field&gt;
+
+  &lt;/bean&gt;
+
+&lt;/beans-config&gt;</pre></div><p> If you use annotations, just annotate the field with <code class="code">@Authors</code> or <code class="code">Readers</code> (Package <code class="code">de.ars.daojones.drivers.notes.annotations</code>) </p><div class="programlistingco"><pre class="prettyprint language-java">@DataSource("Note")
+
+public class Note {
+
+
+
+  @Authors
+
+  @Field("Author")
+
+  private Principal author;
+
+
+
+  public Principal getAuthor() {
+
+    return author;
+
+  }
+
+
+
+  public void setAuthor(final Principal author) {
+
+    this.author = author;
+
+  }
+
+
+
+}</pre></div><p>
+          </p>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>The driver uses the DaoJones <code class="code">FieldAnnotationHandler</code> extension to provide these annotations (see chapter <a class="link" href="#database_access_advanced_meta_properties" title="Field Properties">"Meta Properties for Field Mappings"</a>).</p>
+          </div>
+        </div>
+        <div class="section" title="RichText"><div class="titlepage"><div><div><h4 class="title"><a name="notes_richtext"></a>RichText </h4></div></div></div>
+          
+          <p>If you want a text, a number or any other convertable data type to get stored within a rich text field, you can set a property <code class="code">field-type</code> to a value of <code class="code">richtext</code> or annotate the field with <code class="code">@RichText</code>. </p><div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+              <p>If the type of your bean member is a subclass of <code class="code">NotesIdentificator</code> (<code class="code">DocumentIdentificator</code>, <code class="code">ViewIdentificator</code>, <code class="code">ViewEntryIdentificator</code> or <code class="code">DatabaseIdentificator</code>), a document link is inserted into the rich text field. </p><div class="programlistingco"><pre class="prettyprint language-java">@DataSource
+
+public class DocLinkExample {
+
+
+
+  @RichText
+
+  @Field("views")
+
+  public Identificator createDocumentLink() {
+
+    final String viewName = "All documents";
+
+    final String replicaId = "C17832332";
+
+    final String server = null;
+
+    return new ViewIdentificator(viewName, new DatabaseIdentificator(replicaId, server));
+
+  }
+
+
+
+}</pre></div><p>
+              </p>
+            </div><p>
+          </p>
+        </div>
+        <div class="section" title="Attachments"><div class="titlepage"><div><div><h4 class="title"><a name="notes_attachments"></a>Attachments </h4></div></div></div>
+          
+          <p>Attachments are by default stored as embedded objects into a rich text field. You can alternatively store an attachment as a MIME entity (used esp. for emails) by setting the property <code class="code">field-type</code> to a value of <code class="code">mime-entity</code> or by annotating the field with <code class="code">@MIMEEntity</code>. MIME Entities have the following advantages:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>MIME headers are stored into the document, e.g. the <span class="italic">Content-Type</span>, the <span class="italic">Content-Length</span> and the <span class="italic">Content-Disposition</span> (containing the file name)</p>
+            </li><li class="listitem">
+              <p>Images are displayed directly within the Notes UI. For other file types, an icon that is assigned by the operating system is displayed.</p>
+            </li><li class="listitem">
+              <p>MIME Entities do not have to be imported from the file system, so they allow direct streaming and therefore save resources.</p>
+            </li></ul></div>
+        </div>
+        <div class="section" title="Accessing views"><div class="titlepage"><div><div><h4 class="title"><a name="d5e1358"></a>Accessing views</h4></div></div></div>
+          
+          <p>You can read out views by using the <code class="code">Datasource</code> annotation and specifying a <code class="code">DatasourceType</code> of <code class="code">VIEW</code>. Please note the instructions that can be found within the Lotus Notes documentation:</p>
+          <div class="blockquote"><blockquote class="blockquote">
+            <p>Using getView returns public views and folders and private views and folders that are owned by the effective id running the agent. Private views stored in the desktop are not returned.</p>
+          </blockquote></div>
+          <p>When specifying the parameter, do not combine the view name and an alias. For example, specifying "By Author|AuthorView" does not work. Use either the view name ("By Author") or its alias ("AuthorView").</p>
+          <div class="blockquote"><blockquote class="blockquote">
+            <p>When the view or folder name contains underscores to indicate menu accelerators, you have the option of including or excluding the underscores. The method works more efficiently, however, if you include the underscores.</p>
+          </blockquote></div>
+          <p>
+            <a name="drivers_notes_views_restrictions"></a> Please note the following restrictions when searching beans within a view: </p><div class="alert alert-block" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3>
+              <p>If you search for beans that are mapped to views, DaoJones executes an FTSearch query on the view. FTSearch </p>
+              <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                  <p>cannot be used to search for date-time values. Only searching for dates is allowed. DaoJones will otherwise throw an exception.</p>
+                </li><li class="listitem">
+                  <p>cannot be used to search for collection comparisons. DaoJones will otherwise throw an exception.</p>
+                </li><li class="listitem">
+                  <p>is only able to search for <span class="underline">case-insensitive</span> field values. Each query that searches for strings with a comparison that differs from <code class="code">StringComparison.CONTAINS_IGNORECASE</code> will result in an exception.</p>
+                </li><li class="listitem">
+                  <p>is not able to search for calculated columns in the view. Only columns that display document fields can be searched. If a column title could not be found for comparison, the document field is compared directly.</p>
+                </li><li class="listitem">
+                  <p>only finds results of the current index (if available). You can enable DaoJones to update the full-text index of the <span class="underline">whole</span> database before each query to any view. This could slow down performance. (see chapter <a class="link" href="#notes_driver_settings" title="Driver Settings">"Driver Settings"</a> for details)  </p>
+                </li></ul></div>
+            </div><p>
+          </p>
+          <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+            <p>The Notes driver allows to search a view using a view bean (which is more performant than searching for documents in large databases), and reading out the document-mapped bean. Therefore, you create a field of the document-mapped bean within the view-mapped bean and annotate it with the <code class="code">@DocumentMapped</code> annotation. </p><div class="programlistingco"><pre class="prettyprint language-java">@DataSource(value = "ExampleForm", type = DataSourceType.TABLE)
+
+public class ExampleDocumentBean {
+
+
+
+  @Field
+
+  private String title;
+
+
+
+  @Field
+
+  private Date date;
+
+
+
+  // ...
+
+
+
+}</pre></div><p> </p><div class="programlistingco"><pre class="prettyprint language-java">@DataSource(value = "ExampleView", type = DataSourceType.VIEW)
+
+public class ExampleViewBean {
+
+
+
+  // field to search for
+
+  @Field(id = "title", value = "?1")
+
+  private String title;
+
+
+
+  @DocumentMapped
+
+  @Field
+
+  private ExampleDocumentBean exampleDocumentBean;
+
+
+
+  // ...
+
+
+
+}</pre></div><p>
+            </p>
+          </div>
+        </div>
+        <div class="section" title="Accessing the Notes API"><div class="titlepage"><div><div><h4 class="title"><a name="notes_api_access"></a>Accessing the Notes API </h4></div></div></div>
+          
+          <p>Although the DaoJones Notes driver implements the concept of the DaoJones Runtime to automatically map objects to a Notes database, it is sometimes necessary to access the objects of the Notes API directly, e.g. to</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>create response documents</p>
+            </li><li class="listitem">
+              <p>invoke agents</p>
+            </li><li class="listitem">
+              <p>update the full-text index</p>
+            </li><li class="listitem">
+              <p>invoke <code class="code">computeWithForm</code> before saving a document</p>
+            </li></ul></div>
+          <p>Therefore, the <code class="code">de.ars.daojones.drivers.notes.xt.NotesAPI</code> class was designed to access Notes objects from the corresponding DaoJones environment. This is the only class that has the types of the Notes API as part of their public interface.</p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    // get session from connection
+
+    final Session session = NotesAPI.getSession(connection);
+
+    final Memo memo = connection.find();
+
+    // get document assigned to the bean
+
+    final Document doc = NotesAPI.getDocument(connection, memo);
+
+</pre></div>
+          <p>It is also possible to use the DaoJones Object Mapping feature with a given Notes API object (document or view entry).</p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    // create bean from document
+
+    final Memo memo = NotesAPI.createBean(connection, doc);
+
+</pre></div>
+          <p>If you want to handle events to Notes API objects, you can implement custom <code class="code">NotesEventHandler</code>s. Such events can be</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>before and after saving a document</p>
+            </li><li class="listitem">
+              <p>before and after deleting a document</p>
+            </li><li class="listitem">
+              <p>before and after executing a full-text search within a view</p>
+            </li></ul></div>
+          <p>You have to register a handler <span class="italic">per <code class="code">Connection</code>
+            </span>, i.e. per bean type (and per application, if you have multiple). It is possible to map multiple bean types to a single type of document or view (e.g. to read and update a document partially) - and it is possible to have different <code class="code">NotesEventHandler</code>s for this type of document or view, depending from the type of the bean.</p>
+          <div class="programlistingco"><pre class="prettyprint language-java">    final NotesEventHandler handler = new NotesEventHandlerAdapter() {
+
+      @Override
+
+      public void beforeSave(final NotesEventHandlerContext&lt;Document&gt; context,
+
+              final DocumentSaveConfiguration config) throws NotesException {
+
+        // Further exceptions allowed: DataAccessException, ConfigurationException
+
+        // Access the document
+
+        final Document doc = context.getSource();
+
+        // Response document
+
+        doc.makeResponse(parentDoc);
+
+        // mark the document as read during save operation
+
+        config.setMarkRead(true);
+
+      }
+
+    };
+
+    // add handler to connection to register for the assigned bean type
+
+    NotesAPI.addNotesEventHandler(connection, handler);
+
+</pre></div>
+          <p>Each method of the handler has two parameters:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>a context object to access the Notes API object</p>
+            </li><li class="listitem">
+              <p>(<span class="italic">beforeXXX</span> methods) a config object to configure the event to the Notes API object</p>
+            </li><li class="listitem">
+              <p>(<span class="italic">afterXXX</span> methods) a result object to access to event's result </p>
+            </li></ul></div>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>  It is recommended to create subclasses of <code class="code">NotesEventHandlerAdapter</code> instead of directly implementing the <code class="code">NotesEventHandler</code> interface   to get a compatibility in case of interface extensions in the future.</p>
+          </div>
+          <p>There are already two <code class="code">NotesEventHandler</code> implementations to</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>validate and compute fields before saving a document incl. mark fields as transient to avoid saving them into the document</p>
+            </li><li class="listitem">
+              <p>update the database's full-text index before searching a view</p>
+            </li></ul></div>
+          <p>
+            </p><div class="programlistingco"><pre class="prettyprint language-java">    // Validate and compute fields before saving a document
+
+    final ComputeWithFormHandler h1 = new ComputeWithFormHandler();
+
+    // (optional) do not save "tempField" into the document
+
+    h1.getTransientFields().add("tempField");
+
+    // (optional) validate and compute fields with an alternate form
+
+    h1.setAlternateForm("MemoPart");
+
+    NotesAPI.addNotesEventHandler(connection, h1);
+
+</pre></div><p> </p><div class="programlistingco"><pre class="prettyprint language-java">    // Update the full-text index before executing the search
+
+    // false=do not create any index if it does not already exist (only local databases) 
+
+    final UpdateIndexHandler h2 = new UpdateIndexHandler(false);
+
+    NotesAPI.addNotesEventHandler(connection, h2);
+
+</pre></div><p>
+          </p>
+        </div>
+        <div class="section" title="Local Client Access"><div class="titlepage"><div><div><h4 class="title"><a name="notes_local_access"></a>Local Client Access </h4></div></div></div>
+          
+          <p>If you do not specify a host (<span class="italic">authority</span>) as part of the database path (which means that the database path starts with three slashes - <code class="code">
+              <a class="ulink" href="notes:///" target="_top">notes:///</a> </code>), the local Notes client installation is used. If the client is not started, or the user did not allow to use the Notes session by external applications, the user is asked to enter a username and a password. Otherwise, the current Notes session is used. Credentials are not stored within the connections configuration in this case. The communication with the Domino server is handled by the local Notes client.</p>
+          <p>To use the local Notes client, the following conditions must be fulfilled:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>A Notes client must be installed on the local machine.</p>
+            </li><li class="listitem">
+              <p>The Notes installation directory must be listed in the <span class="italic">PATH</span> environment variable of the operating system.</p>
+            </li><li class="listitem">
+              <p>The Notes.jar file should be in the classpath of the VM's classloader (the highest in the classloader hierarchy). E.g. on JEE application servers, the Notes.jar file must not be in the classpath of an EAR or WAR, it must be in the server's classpath. <span class="italic">(Because native libraries can only be loaded once by a single classloader, whereas an EAR can have multiple classloaders in case of restarting an application on the server.)</span>
+              </p>
+            </li><li class="listitem">
+              <p>You must run a 32-bit JVM.</p>
+            </li><li class="listitem">
+              <p>To avoid the halt for the input of user name and password in the console, start the Notes client and mark the option <span class="italic">Don't prompt for a password from other Notes-based programs</span> (available under <span class="italic">File / Security / User Security...</span>)</p>
+            </li></ul></div>
+          <div class="alert alert-block" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3>
+            <p>Because of the dependencies, restrictions and known problems (e.g. unwanted process terminations), the local client access is only recommended for development environments, esp. for environments that are sometimes offline and therefore need to access local replicas. In production environments, it is highly recommended to directly connect to a Domino server using DIIOP.</p>
+          </div>
+        </div>
+        <div class="section" title="Driver Settings"><div class="titlepage"><div><div><h4 class="title"><a name="notes_driver_settings"></a>Driver Settings </h4></div></div></div>
+          
+          <p>The Notes driver is partially configurable. You can specify Notes-specific settings that are independent from (and not supported by) the connection and bean models. These settings are valid for the driver in general and cannot be customized for a single connection or a single bean type. You can customize them by defining a JVM system property (e.g. with a <code class="code">-D...</code> command line parameter).</p>
+          <p>Here's a short explanation:</p>
+          <table id="d5e1492" class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Setting</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code class="code">daojones.notes.session.scope</code> <span class="italic">(default: <code class="code">application</code>)</span>
+                </td>
+                <td>The scope of a Notes session. Can be <code class="code">thread</code> (one session per thread) or <code class="code">application</code> (one session for all threads). For details about Notes and Multithreading, see the <a class="ulink" href="http://publib.boulder.ibm.com/infocenter/domhelp/v8r0/index.jsp?topic=%2Fcom.ibm.designer.domino.main.doc%2FH_NOTESTHREAD_CLASS_JAVA.html" target="_top">Domino Designer Help</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">daojones.notes.save.force</code> <span class="italic">(default: <code class="code">true</code>)</span>
+                </td>
+                <td>If <code class="code">true</code>, the document is saved even if someone else edits and saves the document while the script is running. The last version of the document that was saved wins; the earlier version is discarded. If <code class="code">false</code>, and someone else edits the document while the script is running, the <code class="code">save.createresponse</code> setting determines what happens.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">daojones.notes.save.createresponse</code> <span class="italic">(default: <code class="code">false</code>)</span>
+                </td>
+                <td>If <code class="code">true</code>, the current document becomes a response to the original document (this is what the replicator does when there's a replication conflict). If <code class="code">false</code>, the save is canceled. If the <code class="code">save.force</code> setting is <code class="code">true</code>, this parameter has no effect.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">daojones.notes.save.markread</code> <span class="italic">(default: <code class="code">false</code>)</span>
+                </td>
+                <td>If <code class="code">true</code>, the document is marked as read on behalf of the current user ID. If <code class="code">false</code>, the document is not marked as read. If the database does not track unread marks, all documents are considered read, and this setting has no effect.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">daojones.notes.delete.force</code> <span class="italic">(default: <code class="code">true</code>)</span>
+                </td>
+                <td>If <code class="code">true</code>, the document is deleted even if another user modifies the document after the script opens it. If <code class="code">false</code>, the document is not deleted if another user modifies it.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code class="code">daojones.notes.delete.soft</code> <span class="italic">(default: <code class="code">true</code>)</span>
+                </td>
+                <td>If <code class="code">true</code> documents are deleted permanently from the database, doing a soft deletion if soft deletions are enabled. If <code class="code">false</code> documents are deleted permanently from the database, doing a hard deletion even if soft deletions are enabled.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="alert alert-info alert-block" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3>
+            <p>The configuration of the Notes driver can be read out by using the <code class="code">de.ars.daojones.driver.notes.Configuration</code> class.</p>
+          </div>
+        </div>
+        <div class="section" title="Extending the Notes driver"><div class="titlepage"><div><div><h4 class="title"><a name="notes_extensions"></a>Extending the Notes driver </h4></div></div></div>
+          
+          <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+            <p>
+              <span class="bold"><strong>
+                <span class="underline">TODOs:</span>
+              </strong></span>
+            </p>
+            <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>Custom Data Handlers</p>
+              </li><li class="listitem">
+                <p>Custom ComparisonBuilder</p>
+              </li><li class="listitem">
+                <p>Custom Encoder</p>
+              </li><li class="listitem">
+                <p>Custom QueryLanguageBuilder</p>
+              </li></ul></div>
+          </div>
+        </div>
+      </div>
+      <div class="section" title="Test Database Driver"><div class="titlepage"><div><div><h3 class="title"><a name="drivers_test"></a>Test Database Driver </h3></div></div></div>
+        
+        <p>For unit testing issues, you can use the <a class="link" href="#test_support_driver" title="Test Driver">test database driver</a> provided by the DaoJones Test Support to run tests independently from any database. The Notes database driver provides a test driver too, which is an extension of the common test driver.</p>
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            <p>You can use your connection configuration files refering to the Notes database driver. During the unit test, the original Notes driver is replaced by this test driver.</p>
+          </li><li class="listitem">
+            <p>Test data is read from a bundle of XML file - one per database path that is specified within your connection configuration. Some examples:</p>
+            <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                <p>A database path of <code class="code">
+                    <a class="ulink" href="notes://ACME/db.nsf" target="_top">notes://ACME/db.nsf</a> </code> is mapped to the file path <code class="code">ACME/db.nsf.xml</code>.</p>
+              </li><li class="listitem">
+                <p>A database path of <code class="code">
+                    <a class="ulink" href="notes://ACME/12345?type=replica" target="_top">notes://ACME/12345?type=replica</a> </code> is mapped to the file path <code class="code">ACME/12345.xml</code>.</p>
+              </li><li class="listitem">
+                <p>A database path of <code class="code">
+                    <a class="ulink" href="notes:///12345?type=replica&amp;server=ACME" target="_top">notes:///12345?type=replica&amp;server=ACME</a> </code> is mapped to the file path <code class="code">ACME/12345.xml</code> too.</p>
+              </li><li class="listitem">
+                <p>A database path of <code class="code">
+                    <a class="ulink" href="notes:///12345?type=replica" target="_top">notes:///12345?type=replica</a> </code> is mapped to the file path <code class="code">local/12345.xml</code> too.</p>
+              </li></ul></div>
+          </li><li class="listitem">
+            <p>The <code class="code">Principal</code> type and its sub-types can be handled by the driver.</p>
+          </li></ul></div>
+      </div>
+      <div class="section" title="Implement custom database drivers"><div class="titlepage"><div><div><h3 class="title"><a name="d5e1601"></a>Implement custom database drivers</h3></div></div></div>
+        
+        <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+          <p>
+            <span class="bold"><strong>
+              <span class="underline">TODOs:</span>
+            </strong></span>
+          </p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>Implement Connection Factory (ServiceLoader or any environment mechanism)</p>
+            </li><li class="listitem">
+              <p>Implement Connection</p>
+            </li><li class="listitem">
+              <p>Implement BeanIdentificator thing</p>
+            </li></ul></div>
+        </div>
+      </div>
+    </div>
+    <div class="section" title="Cache Drivers"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e1614"></a>Cache Drivers</h2></div></div></div>
+      
+      <p>Database queries are repeated during runtime, so the performance of your application could be better with the usage of a cache. DaoJones has an extension interface for caches that can be configured with the connection model:</p>
+      <div class="programlistingco"><pre class="prettyprint language-xml">&lt;configuration xmlns="http://www.ars.de/daojones/2.0/connections"&gt;
+
+
+
+  &lt;connection type="..."&gt;
+
+    &lt;cache type="cacheFactory"&gt;
+
+      &lt;property name="cacheProperty1" value="cacheValue1"/&gt;
+
+    &lt;/cache&gt;
+
+    &lt;database&gt;...&lt;/database&gt;
+
+  &lt;/connection&gt;
+
+
+
+&lt;/configuration&gt;</pre></div>
+      <div class="section" title="DaoJones InMemory"><div class="titlepage"><div><div><h3 class="title"><a name="d5e1620"></a>DaoJones InMemory</h3></div></div></div>
+        
+        <p>The DaoJones runtime itself provides a cache factory that simply caches objects within internal hash maps, so within the memory. This cache factory has the id <code class="code">de.ars.daojones.caches.memory</code>.</p>
+        <p>You can optionally configure a <code class="code">timeout</code> property that specifies the count of seconds that a cache entry is valid. After this time, the entry gets invalid, and the query is executed again. If not specified, a default value of <code class="code">600</code> seconds (10 minutes) is used.</p>
+        <div class="programlistingco"><pre class="prettyprint language-xml">&lt;configuration xmlns="http://www.ars.de/daojones/2.0/connections"&gt;
+
+
+
+  &lt;connection type="..."&gt;
+
+    &lt;cache type="de.ars.daojones.caches.memory"&gt;
+
+      &lt;property name="timeout" value="3600"/&gt;
+
+    &lt;/cache&gt;
+
+    &lt;database&gt;...&lt;/database&gt;
+
+  &lt;/connection&gt;
+
+
+
+&lt;/configuration&gt;</pre></div>
+      </div>
+      <div class="section" title="IBM WebSphere Dynamic Cache Service"><div class="titlepage"><div><div><h3 class="title"><a name="d5e1630"></a>IBM WebSphere Dynamic Cache Service</h3></div></div></div>
+        
+        <p>A cache driver implementation to use IBM's Dynamic Cache Service is also available. You can find a documentation of this service at <a class="ulink" href="http://pic.dhe.ibm.com/infocenter/wasinfo/v8r5/index.jsp?topic=%2Fcom.ibm.websphere.base.doc%2Fae%2Fwelc6tech_dyn_intro.html" target="_top">IBM Infocenter</a>.</p>
+        <p>Use the id <code class="code">com.ibm.ws.dynacache</code> and optionally specify the type of cache that is used. Configure the cache at the server runtime. Put a <code class="code">cachespec.xml</code> file into your application (e.g. into the <code class="code">WEB-INF</code> folder of your web application).</p>
+        <div class="section" title="Object Cache"><div class="titlepage"><div><div><h4 class="title"><a name="d5e1638"></a>Object Cache</h4></div></div></div>
+          
+          <p>The Object Cache is a simple map managed (e.g. replicated) by the application server. This is the default type of cache that is used. You can configure the DaoJones cache driver with the following optional properties:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>
+                <code class="code">timeout</code> is the count of seconds that a cache entry is valid. Per default, there isn't any timeout.</p>
+            </li><li class="listitem">
+              <p>
+                <code class="code">instance</code> is the name of the cache instance that must be configured at the runtime. The default  cache instance name is <code class="code">services/cache/daojones/&lt;app&gt;/&lt;connection&gt;</code>, where <code class="code">&lt;app&gt;</code> is the name of  the DaoJones application and <code class="code">&lt;connection&gt;</code> is the id of the configured connection. Therefore, it is  recommended to specify an id for the connection.</p>
+            </li></ul></div>
+        </div>
+        <div class="section" title="Command Cache"><div class="titlepage"><div><div><h4 class="title"><a name="d5e1651"></a>Command Cache</h4></div></div></div>
+          
+          <p>The Command Cache can be used by specifying the property <code class="code">type</code> with a value of <code class="code">command</code>. The cache driver does not have any further configuration parameters. The timeout e.g. is configured directly within the <code class="code">cachespec.xml</code> file:</p>
+          <div class="programlistingco"><pre class="prettyprint language-xml">&lt;cache&gt;
+
+  &lt;cache-entry&gt;
+
+    &lt;class&gt;command&lt;/class&gt;
+
+    &lt;sharing-policy&gt;not-shared&lt;/sharing-policy&gt;
+
+    &lt;name&gt;de.ars.daojones.internal.cache.ws.QueryCommand&lt;/name&gt;
+
+    &lt;cache-id&gt;
+
+      &lt;component id="getCacheId" type="method"&gt;
+
+        &lt;required&gt;true&lt;/required&gt;
+
+      &lt;/component&gt;
+
+      &lt;priority&gt;1&lt;/priority&gt;
+
+      &lt;timeout&gt;3600&lt;/timeout&gt;
+
+    &lt;/cache-id&gt;
+
+  &lt;/cache-entry&gt;
+
+&lt;/cache&gt;</pre></div>
+          <div class="alert alert-success alert-block" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+            <p>To use the Command Cache, you need to enable servlet caching at the web container.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section" title="Implement custom cache drivers"><div class="titlepage"><div><div><h3 class="title"><a name="d5e1662"></a>Implement custom cache drivers</h3></div></div></div>
+        
+        <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+          <p>
+            <span class="bold"><strong>
+              <span class="underline">TODOs:</span>
+            </strong></span>
+          </p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              <p>Implement Cache Factory</p>
+            </li><li class="listitem">
+              <p>Implement Cache</p>
+            </li><li class="listitem">
+              <p>Implement BeanIdentificator thing</p>
+            </li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chapter" title="Chapter&nbsp;9.&nbsp;Perspectives"><div class="titlepage"><div><div><div xmlns:d="http://docbook.org/ns/docbook" class="page-header"><h1><a name="d5e1675"></a>Chapter&nbsp;9.&nbsp;Perspectives</h1></div></div></div></div>
+    
+    <div class="alert alert-error alert-block" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>
+      <p>
+        <span class="bold"><strong>
+          <span class="underline">TODOs:</span>
+        </strong></span>
+      </p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>Dependency Injection?? Integration of DI frameworks</p>
+        </li></ul></div>
+    </div>
+  </div>
+</div></body></html>
